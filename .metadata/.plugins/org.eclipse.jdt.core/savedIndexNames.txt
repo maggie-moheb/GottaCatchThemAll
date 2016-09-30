@@ -6,7 +6,6 @@ INDEX VERSION 1.127+/Users/maggiemoheb/Desktop/GUC/9th semester/Artificial Intel
 1271342938.index
 3975215079.index
 2777386132.index
-2995377783.index
 1384487945.index
 1833648217.index
 3199462873.index
