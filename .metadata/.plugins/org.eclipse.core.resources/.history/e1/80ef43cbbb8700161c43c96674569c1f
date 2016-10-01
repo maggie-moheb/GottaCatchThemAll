@@ -1,0 +1,7 @@
+
+public class SearchGeneral {
+	public Node General_Search(Problem problem) {
+		return null;
+	}
+}
+
