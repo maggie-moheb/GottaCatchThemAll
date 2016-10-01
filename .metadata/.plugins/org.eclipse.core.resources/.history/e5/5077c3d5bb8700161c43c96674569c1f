@@ -1,0 +1,12 @@
+import java.util.ArrayList;
+
+public class SearchGeneral {
+	public Node General_Search(Problem problem, QING_FUN qing_fun) {
+		State initial_state = problem.initialState; 
+		Node root = new Node(); 
+		root.MakeNode(initial_state);
+		ArrayList<Node> Nodes = new ArrayList<>();
+		return null;
+	}
+}
+

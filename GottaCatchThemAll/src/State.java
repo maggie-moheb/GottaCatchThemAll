@@ -6,6 +6,17 @@ public class State {
 	int pokemonsSoFar;
 	int xHatch;
 	
+	// state constructor contains the x and y position on grid
+	// direction of the agent 
+	// pokemon that the agent has not collected so far 
+	// xHatch is the steps remaining for the egg to hatch 
+	public State(int x, int y, Direction d, int p, int xH) {
+		this.x = x; 
+		this.y = y; 
+		this.direction = d; 
+		this.pokemonsSoFar = p; 
+		this.xHatch = xH;
+	}
 	public int getX() {
 		return x;
 	}

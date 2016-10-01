@@ -1,0 +1,4 @@
+
+public enum Operator {
+	null, // in case of root
+}
