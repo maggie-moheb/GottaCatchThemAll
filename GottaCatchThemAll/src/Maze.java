@@ -33,13 +33,58 @@ public class Maze {
 		maze.mazeGrid[xStart][yStart] = startCell;
 		nodes.add(startCell); // add start node to the nodes Stack
 		//DFS
-		System.out.println(" Limit: ("+maze.Width+", "+maze.Length);
-
+		// start with 4 random walls 
+		int xWall = xStart;	int xWall2 = xStart;
+		int yWall = yStart; int yWall2 = yStart;
+		int xWall3 = xStart;int xWall4 = xStart;
+		int yWall3 = yStart;int yWall4 = yStart;
+		while(true){
+			if(xWall==xStart && yWall == yStart){
+				xWall = R.nextInt(maze.Width);
+				yWall = R.nextInt(maze.Length);
+			}
+			else if(xWall2==xStart && yWall2 == yStart){
+				xWall2 = R.nextInt(maze.Width);
+				yWall2 = R.nextInt(maze.Length);
+			}
+			else if(xWall3==xStart && yWall3 == yStart){
+				xWall3 = R.nextInt(maze.Width);
+				yWall3 = R.nextInt(maze.Length);
+			}
+			else if(xWall4==xStart && yWall4 == yStart){
+				xWall4 = R.nextInt(maze.Width);
+				yWall4 = R.nextInt(maze.Length);
+			}
+			else
+				break;
+		}
+		MazeCell cellWall = new MazeCell();
+		cellWall.x = xWall;
+		cellWall.y = yWall;
+		cellWall.Wall = true;
+		maze.mazeGrid[xWall][yWall] = cellWall;
+		
+		cellWall.x = xWall2;
+		cellWall.y = yWall2;
+		cellWall.Wall = true;
+		maze.mazeGrid[xWall2][yWall2] = cellWall;
+		
+		cellWall.x = xWall3;
+		cellWall.y = yWall3;
+		cellWall.Wall = true;
+		maze.mazeGrid[xWall3][yWall3] = cellWall;
+		
+		cellWall.x = xWall4;
+		cellWall.y = yWall4;
+		cellWall.Wall = true;
+		maze.mazeGrid[xWall4][yWall4] = cellWall;
+		
 		while(!nodes.isEmpty()){
 			boolean poky = R.nextBoolean();
 			int pokyLoc = R.nextInt(4);
 			MazeCell Current = nodes.pop();
-			if(Current.Wall || !Current.vistied){
+			if(Current.Wall) continue;
+				if(!Current.vistied){
 				Current.vistied = true;
 				int right = Current.x + 1;// move 1 steps to the right at a time
 				int left = Current.x - 1; // 1 steps to the left
