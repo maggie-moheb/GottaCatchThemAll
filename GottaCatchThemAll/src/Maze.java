@@ -4,7 +4,7 @@ import java.util.Stack;
 
 
 public class Maze {
-	int Length, Width;
+	int Length, Width, hatch;
 	MazeCell[][] mazeGrid;
 	/*
 	 * Create an instance of Maze with random dimensions  
@@ -24,6 +24,7 @@ public class Maze {
 		Maze maze = new Maze(); //create new instance of maze
 		//Generate 4 random walls 
 		Random R = new Random();
+		maze.hatch = R.nextInt(maze.Width*maze.Length);
 		int xStart = R.nextInt(maze.Width);
 		int yStart = R.nextInt(maze.Length);
 		Stack <MazeCell>nodes = new Stack<MazeCell>();
@@ -161,6 +162,7 @@ public class Maze {
 	 */
 	public static Maze setwallGoal(Maze maze, int xGoal, int yGoal){
 		MazeCell[][] Grid = maze.mazeGrid;
+		int numWalls = 0;
 		// set Goal
 		Grid[xGoal][yGoal] = (Grid[xGoal][yGoal]== null)? new MazeCell():Grid[xGoal][yGoal];
 		Grid[xGoal][yGoal].isGoal = true;
@@ -171,11 +173,13 @@ public class Maze {
 				{
 					Grid[i][j] = new MazeCell();
 					Grid[i][j].Wall = true;
+					numWalls++;
 				}
-
 			}
 		}
-
+		// poky's egg can hatch in any number of steps that is 
+		//bounded by the number of cells in the grid - walls
+		maze.hatch = (maze.hatch > numWalls)?maze.hatch - numWalls: maze.hatch;
 		return maze;
 	}
 	public static void PrintMaze(Maze maze){
