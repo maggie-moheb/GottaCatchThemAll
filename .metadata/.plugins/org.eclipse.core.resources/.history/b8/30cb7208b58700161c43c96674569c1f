@@ -1,0 +1,5 @@
+
+public enum QING_FUN {
+	UCS,
+	AStar,
+}

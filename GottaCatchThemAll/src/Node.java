@@ -6,6 +6,22 @@ public class Node {
 	int depth;
 	int pathCost;
 	
+	// create the root of the tree
+	public Node MakeNode(State state) {
+		return new Node(state,null,Operator.nill, 0,0);
+	}
+	public Node() {	
+	}
+	
+	// node constructor: State, operator used to reach this node, depth of the node, path cost to reach the node 
+	public Node(State s, Node parent, Operator operator, int depth,int pathCost) {
+		State state = new State(s.x, s.y, s.direction,s.pokemonsSoFar,s.xHatch); 
+		this.state = state;
+		this.parent = parent; 
+		this.operator = operator; 
+		this.depth = depth; 
+		this.pathCost = pathCost; 
+	}
 	public State getState() {
 		return state;
 	}
