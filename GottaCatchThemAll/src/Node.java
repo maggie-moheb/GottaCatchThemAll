@@ -63,7 +63,6 @@ public class Node implements Comparable{
 	public void setPathCost(int pathCost) {
 		this.pathCost = pathCost;
 	}
-	@Override
 	public int compareTo(Object o) {
 		Node node = (Node) o;
 		if(pathCost > node.pathCost) return 1; 
