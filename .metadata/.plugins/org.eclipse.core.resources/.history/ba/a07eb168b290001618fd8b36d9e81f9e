@@ -18,7 +18,7 @@ public class GottaCatchThemAll extends Problem{
 		int xHatch =  node.state.xHatch - node.parent.state.xHatch;
 		node.pathCost = node.parent.pathCost - (20*pokemon + 50* goal + 10*xHatch);
 		// TODO Auto-generated method stub
-		return node.pathCost;
+		return 0;
 	}
 
 	@Override

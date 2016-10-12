@@ -32,7 +32,7 @@ public abstract class Problem {
 	}
 
 	//path cost 
-	public abstract int pathCostFunction(Node node);
+	public abstract int goalFunction();
 	
 	// expand a specific node based on the operators of the problem
 	public abstract ArrayList<Node> expand(Node node);
