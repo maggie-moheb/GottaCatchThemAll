@@ -20,4 +20,22 @@ public class GottaCatchThemAll extends Problem{
 		return null;
 	}
 
+	@Override
+	public void setFirstHeuristic(Node node) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setSecondHeuristic(Node node) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setThirdHeuristic(Node node) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
