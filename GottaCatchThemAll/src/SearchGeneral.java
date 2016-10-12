@@ -20,14 +20,39 @@ public class SearchGeneral {
 	// Qing function for different algorithms 
 	public ArrayList<Node> GeneralQingFunc(QING_FUN algorithm, ArrayList<Node> nodesSoFar,ArrayList<Node> nodesExpanded) {
 		if(algorithm == QING_FUN.UCS) return UniformCostSearchQing(nodesSoFar, nodesExpanded);
+		if(algorithm == QING_FUN.AStar) return AStarQing(nodesSoFar, nodesExpanded);
 		if(algorithm == QING_FUN.DFS) return DepthFirstSearchQing(nodesSoFar, nodesExpanded);
 		return null; 
 
 
 	}
 	// Qing function for uniform cost search
-	public ArrayList<Node> UniformCostSearchQing(ArrayList<Node> nodes, ArrayList<Node> newNode) {
-		return null; 
+	public ArrayList<Node> UniformCostSearchQing(ArrayList<Node> nodes, ArrayList<Node> newNodes) {
+		nodes.addAll(newNodes);
+		nodes.sort((o1, o2) -> o1.compareTo(o2));
+		return nodes; 
+	}
+	// Qing function for A* 
+	public ArrayList<Node> AStarQing(ArrayList<Node> nodes, ArrayList<Node> newNodes) {
+		nodes.addAll(newNodes);
+		nodes.sort((o1, o2) -> o1.compareToHeuristic(o2));
+		return nodes; 
+	}
+	public static void main(String[]args ) {
+		
+		ArrayList<Node> nodes = new ArrayList<Node>(); 
+		ArrayList<Node> newNodes = new ArrayList<Node>(); 
+		for (int i = 3; i >= 0; i--) {
+			Node node = new Node(i);
+			Node node2 = new Node(i*2);
+			nodes.add(node);
+			newNodes.add(node2); 
+		}
+		SearchGeneral s = new SearchGeneral(); 
+		nodes = s.UniformCostSearchQing(nodes, newNodes);
+		for(int i = 0; i < nodes.size(); i++) {
+			System.out.println(nodes.get(i).pathCost);
+		}
 	}
 	// Qing function for Depth first search
 	public ArrayList<Node> DepthFirstSearchQing(ArrayList<Node> nodesSoFar, ArrayList<Node> children){		
