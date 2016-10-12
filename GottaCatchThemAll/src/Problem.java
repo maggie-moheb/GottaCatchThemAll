@@ -7,6 +7,31 @@ public abstract class Problem {
 	
 	public abstract boolean passGoalTest(State currentState);
 	
+	public Operator[] getOperators() {
+		return operators;
+	}
+
+	public void setOperators(Operator[] operators) {
+		this.operators = operators;
+	}
+
+	public State getInitialState() {
+		return initialState;
+	}
+
+	public void setInitialState(State initialState) {
+		this.initialState = initialState;
+	}
+
+	public State[] getStateSpace() {
+		return stateSpace;
+	}
+
+	public void setStateSpace(State[] stateSpace) {
+		this.stateSpace = stateSpace;
+	}
+
+	//path cost 
 	public abstract int goalFunction();
 	
 	// expand a specific node based on the operators of the problem
