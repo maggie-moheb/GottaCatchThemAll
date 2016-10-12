@@ -4,8 +4,10 @@ import java.util.ArrayList;
 // takes problem and qing_fun as input which is the algorithm 
 // returns the final node or null for failure  
 public class SearchGeneral {
+	Node root;
+	int MAX_DEPTH = 0;
 	public Node General_Search(Problem problem, QING_FUN qing_fun) {
-		Node root = new Node(); 
+		root = new Node(); 
 		root.MakeNode(problem.initialState);
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		nodes.add(root);
@@ -22,9 +24,25 @@ public class SearchGeneral {
 		if(algorithm == QING_FUN.UCS) return UniformCostSearchQing(nodesSoFar, nodesExpanded);
 		if(algorithm == QING_FUN.AStar) return AStarQing(nodesSoFar, nodesExpanded);
 		if(algorithm == QING_FUN.DFS) return DepthFirstSearchQing(nodesSoFar, nodesExpanded);
+		if(algorithm == QING_FUN.GR1) return DepthFirstSearchQing(nodesSoFar, nodesExpanded);
+		if(algorithm == QING_FUN.ID) return DepthLimitedSearchQing(nodesSoFar, nodesExpanded);
+
 		return null; 
 
 
+	}
+	public ArrayList<Node> DepthLimitedSearchQing(ArrayList<Node> nodes, ArrayList<Node> children) {
+		if(children.get(0).depth > MAX_DEPTH) {
+			nodes.clear();
+			nodes.add(root);
+			MAX_DEPTH++;
+		} 
+		else {
+			for(int i = 0; i< nodes.size() ; i++) {
+				children.add(nodes.get(i));
+			}
+		}
+		return children;
 	}
 	// Qing function for uniform cost search
 	public ArrayList<Node> UniformCostSearchQing(ArrayList<Node> nodes, ArrayList<Node> newNodes) {
@@ -49,7 +67,7 @@ public class SearchGeneral {
 			newNodes.add(node2); 
 		}
 		SearchGeneral s = new SearchGeneral(); 
-		nodes = s.UniformCostSearchQing(nodes, newNodes);
+		nodes = s.DepthFirstSearchQing(nodes, newNodes);
 		for(int i = 0; i < nodes.size(); i++) {
 			System.out.println(nodes.get(i).pathCost);
 		}
@@ -58,7 +76,7 @@ public class SearchGeneral {
 	public ArrayList<Node> DepthFirstSearchQing(ArrayList<Node> nodesSoFar, ArrayList<Node> children){		
 		for(int i = 0; i<nodesSoFar.size(); i++){
 		  children.add(nodesSoFar.get(i));
-			}					
+		}					
 		return children;
 	}
 	// Qing function for Breadth first search

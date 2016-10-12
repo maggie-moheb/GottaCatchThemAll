@@ -2,8 +2,10 @@
 public enum QING_FUN {
 	UCS,
 	AStar,
-	Greedy, 
+	GR1,
+	GR2,
+	GR3,
 	BFS,
 	DFS,
-	IDS,
+	ID,
 }
