@@ -59,8 +59,8 @@ public class Maze extends Problem {
 	}
 	@Override
 	public boolean passGoalTest(State currentState) {
-		return false;
-		//return currentState.isgoal && currentState.pokemonsSoFar == totalPoky && currentState.xHatch <= 0;
+
+		return currentState.isgoal && currentState.pokemonsSoFar == totalPoky && currentState.xHatch <= 0;
 	}
 	@Override
 	public int goalFunction() {

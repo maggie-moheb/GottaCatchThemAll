@@ -59,8 +59,8 @@ public class Maze extends Problem {
 	}
 	@Override
 	public boolean passGoalTest(State currentState) {
-		return false;
-		//return currentState.isgoal && currentState.pokemonsSoFar == totalPoky && currentState.xHatch <= 0;
+
+		return currentState.isgoal && currentState.pokemonsSoFar == totalPoky && currentState.xHatch <= 0;
 	}
 	@Override
 	public int goalFunction() {
@@ -75,14 +75,13 @@ public class Maze extends Problem {
 		Direction currDir = node.getState().getDirection();
 		ArrayList<Node> possibleMoves = new ArrayList<Node>();
 		switch (currDir) {
-		//case EAST: return moveEast(node, possibleMoves);
-		//case WEST: return moveWest(node, possibleMoves);
-		//case NORTH: return moveUp(node, possibleMoves);
-		//case SOUTH: return moveDown(node, possibleMoves);
+		case EAST: return moveEast(node, possibleMoves);
+		case WEST: return moveWest(node, possibleMoves);
+		case NORTH: return moveUp(node, possibleMoves);
+		case SOUTH: return moveDown(node, possibleMoves);
 		}
 		return possibleMoves;
 	}
-	/*
 	public ArrayList<Node> moveEast(Node node, ArrayList<Node> possibleMoves){
 		State currS = node.getState();
 		Node currParent = node.getParent();
@@ -177,7 +176,9 @@ public class Maze extends Problem {
 		}
 		return possibleMoves;
 	}
-	*/
+	/*
+	 * Randomly generate a maze configuration   
+	 */
 	public static Maze GeneMaze(){
 		Maze maze = new Maze(); //create new instance of maze
 		Random R = new Random();
