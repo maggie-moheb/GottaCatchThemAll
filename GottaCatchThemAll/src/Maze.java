@@ -1,10 +1,11 @@
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
 
 
-public class Maze {
-	int Length, Width, hatch;
+public class Maze extends Problem {
+	int Length, Width, totalPoky;
 	MazeCell[][] mazeGrid;
 	/*
 	 * Create an instance of Maze with random dimensions  
@@ -15,77 +16,189 @@ public class Maze {
 		int Low = 4; //minimum l/w of any generated maze
 		Length = R.nextInt(High - Low) + Low;
 		Width = R.nextInt(High - Low) + Low;
-		mazeGrid = new MazeCell[Width][Length]; 		
+		mazeGrid = intiGrid(new MazeCell[Length][Width]); 		
+	}
+	public MazeCell[][] intiGrid(MazeCell[][] grid){
+		for (int i = 0; i< Length; i++){
+			for (int j = 0; j< Width;j++){
+				grid[i][j] = new MazeCell();
+				grid[i][j].x = j;
+				grid[i][j].y = i;
+			}
+		}
+		return grid;
+	}
+	public int getLength() {
+		return Length;
+	}
+
+	public void setLength(int length) {
+		Length = length;
+	}
+
+	public int getWidth() {
+		return Width;
+	}
+
+	public void setWidth(int width) {
+		Width = width;
+	}
+	public MazeCell[][] getMazeGrid() {
+		return mazeGrid;
+	}
+
+	public void setMazeGrid(MazeCell[][] mazeGrid) {
+		this.mazeGrid = mazeGrid;
+	}
+	public State getInitialState() {
+		return this.initialState;
+	}
+
+	public void setInitialState(State initialState) {
+		this.initialState = initialState;
+	}
+	@Override
+	public boolean passGoalTest(State currentState) {
+
+		return currentState.isgoal && currentState.pokemonsSoFar == totalPoky && currentState.xHatch <= 0;
+	}
+	@Override
+	public int goalFunction() {
+		// trans may affect the # of poky, depth, cost and xhatch
+
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public ArrayList<Node> expand(Node node) {
+		//rotate , translate(Left, right, up, down)
+		Direction currDir = node.getState().getDirection();
+		ArrayList<Node> possibleMoves = new ArrayList<Node>();
+		switch (currDir) {
+		case EAST: return moveEast(node, possibleMoves);
+		case WEST: return moveWest(node, possibleMoves);
+		case NORTH: return moveUp(node, possibleMoves);
+		case SOUTH: return moveDown(node, possibleMoves);
+		}
+		return possibleMoves;
+	}
+	public ArrayList<Node> moveEast(Node node, ArrayList<Node> possibleMoves){
+		State currS = node.getState();
+		Node currParent = node.getParent();
+		int currDepth  = node.getDepth();
+		int currPathCost = node.getPathCost();
+		// possible rotations west,North,South.
+		// rotations does not affect xhatch nor # of poky
+		State RotS = new State(currS.getX(), currS.getY(), null,currS.pokemonsSoFar, currS.getxHatch());
+		RotS.setDirection(Direction.WEST); // current direction
+		possibleMoves.add(new Node(RotS, currParent, Operator.ROTATE, currDepth, currPathCost));//Face West
+		RotS.setDirection(Direction.NORTH); // current direction
+		possibleMoves.add(new Node(RotS, currParent, Operator.ROTATE, currDepth, currPathCost));//Face North
+		RotS.setDirection(Direction.SOUTH); // current direction
+		possibleMoves.add(new Node(RotS, currParent, Operator.ROTATE, currDepth, currPathCost));//Face South
+		// possible translations Left,Right,UP,Down
+		int xRight;
+		xRight = currS.getX() + 1;
+		if(xRight < Width ){ // possible move not out of bounds
+			possibleMoves.add(new Node(new State(xRight, currS.getY(), currS.getDirection(),(mazeGrid[currS.getY()][xRight].ContainsPock)?currS.pokemonsSoFar+1:currS.pokemonsSoFar, currS.getxHatch()-1),
+										node, Operator.TRANSLATE, currDepth++, currPathCost++));//Face West
+		}
+		return possibleMoves;
+	}
+	public ArrayList<Node> moveWest(Node node,ArrayList<Node> possibleMoves){
+		State currS = node.getState();
+		Node currParent = node.getParent();
+		int currDepth  = node.getDepth();
+		int currPathCost = node.getPathCost();
+		// possible rotations west,North,South.
+		// rotations does not affect xhatch nor # of poky
+		State RotS = new State(currS.getX(), currS.getY(), null, currS.pokemonsSoFar, currS.getxHatch());
+		RotS.setDirection(Direction.EAST); // current direction
+		possibleMoves.add(new Node(RotS, currParent, Operator.ROTATE, currDepth, currPathCost));//Face West
+		RotS.setDirection(Direction.NORTH); // current direction
+		possibleMoves.add(new Node(RotS, currParent, Operator.ROTATE, currDepth, currPathCost));//Face North
+		RotS.setDirection(Direction.SOUTH); // current direction
+		possibleMoves.add(new Node(RotS, currParent, Operator.ROTATE, currDepth, currPathCost));//Face South
+		// possible translations Left,Right,UP,Down
+		int xLeft;
+		xLeft = currS.getX() - 1;
+		if(xLeft >= 0 ){ // possible move not out of bounds
+			if(xLeft >= 0 ){ // possible move not out of bounds
+				possibleMoves.add(new Node(new State(xLeft, currS.getY(), currS.getDirection(),(mazeGrid[currS.getY()][xLeft].ContainsPock)?currS.pokemonsSoFar+1:currS.pokemonsSoFar, currS.getxHatch()-1),
+											node, Operator.TRANSLATE, currDepth++, currPathCost++));//Face West
+			}		}
+		return possibleMoves;
+	}
+	
+	public ArrayList<Node> moveUp(Node node,ArrayList<Node> possibleMoves){
+		State currS = node.getState();
+		Node currParent = node.getParent();
+		int currDepth  = node.getDepth();
+		int currPathCost = node.getPathCost();
+		// possible rotations west,North,South.
+		// rotations does not affect xhatch nor # of poky
+		State RotS = new State(currS.getX(), currS.getY(), null, 0, currS.pokemonsSoFar);
+		RotS.setDirection(Direction.EAST); // current direction
+		possibleMoves.add(new Node(RotS, currParent, Operator.ROTATE, currDepth, currPathCost));//Face West
+		RotS.setDirection(Direction.EAST); // current direction
+		possibleMoves.add(new Node(RotS, currParent, Operator.ROTATE, currDepth, currPathCost));//Face North
+		RotS.setDirection(Direction.SOUTH); // current direction
+		possibleMoves.add(new Node(RotS, currParent, Operator.ROTATE, currDepth, currPathCost));//Face South
+		// possible translations Left,Right,UP,Down
+		int yUp;
+		yUp = currS.getY() + 1;
+		if(yUp < Length ){ // possible move not out of bounds
+			possibleMoves.add(new Node(new State(currS.getX(), yUp , currS.getDirection(),currDepth++, currS.getxHatch()-1), node, Operator.TRANSLATE, currDepth++, currPathCost++));//Face West
+		}
+		return possibleMoves;
+	}
+
+	public ArrayList<Node> moveDown(Node node,ArrayList<Node> possibleMoves){
+		State currS = node.getState();
+		Node currParent = node.getParent();
+		int currDepth  = node.getDepth();
+		int currPathCost = node.getPathCost();
+		// possible rotations west,North,South.
+		// rotations does not affect xhatch nor # of poky
+		State RotS = new State(currS.getX(), currS.getY(), null, 0, currS.pokemonsSoFar);
+		RotS.setDirection(Direction.EAST); // current direction
+		possibleMoves.add(new Node(RotS, currParent, Operator.ROTATE, currDepth, currPathCost));//Face West
+		RotS.setDirection(Direction.EAST); // current direction
+		possibleMoves.add(new Node(RotS, currParent, Operator.ROTATE, currDepth, currPathCost));//Face North
+		RotS.setDirection(Direction.SOUTH); // current direction
+		possibleMoves.add(new Node(RotS, currParent, Operator.ROTATE, currDepth, currPathCost));//Face South
+		// possible translations Left,Right,UP,Down
+		int yDown;
+		yDown = currS.getY() - 1;
+		if(yDown >= 0 ){ // possible move not out of bounds
+			possibleMoves.add(new Node(new State(currS.getX(), yDown, currS.getDirection(),currDepth++, currS.getxHatch()-1),
+						node, Operator.TRANSLATE, currDepth++, currPathCost++));//Face West
+		}
+		return possibleMoves;
 	}
 	/*
 	 * Randomly generate a maze configuration   
 	 */
 	public static Maze GeneMaze(){
 		Maze maze = new Maze(); //create new instance of maze
-		//Generate 4 random walls 
 		Random R = new Random();
-		maze.hatch = R.nextInt(maze.Width*maze.Length);
-		int xStart = R.nextInt(maze.Width);
-		int yStart = R.nextInt(maze.Length);
+		int xStart = R.nextInt(maze.Width-1);
+		int yStart = R.nextInt(maze.Length-1); 
+		maze.setInitialState(new State(xStart, yStart, Direction.NORTH, 0, 0));
+		maze.getInitialState().setxHatch(R.nextInt((maze.Width-1)*(maze.Length-1))); // setting x-hatch randomly at max equal to the number of cells in the maze
 		Stack <MazeCell>nodes = new Stack<MazeCell>();
 		MazeCell startCell = new MazeCell();
 		startCell.x = xStart; //set indexes of the starting cell
 		startCell.y = yStart;
-		maze.mazeGrid[xStart][yStart] = startCell;
+		maze.mazeGrid[yStart][xStart] = startCell;
 		nodes.add(startCell); // add start node to the nodes Stack
 		//DFS
-		// start with 4 random walls 
-		int xWall = xStart;	int xWall2 = xStart;
-		int yWall = yStart; int yWall2 = yStart;
-		int xWall3 = xStart;int xWall4 = xStart;
-		int yWall3 = yStart;int yWall4 = yStart;
-		while(true){
-			if(xWall==xStart && yWall == yStart){
-				xWall = R.nextInt(maze.Width);
-				yWall = R.nextInt(maze.Length);
-			}
-			else if(xWall2==xStart && yWall2 == yStart){
-				xWall2 = R.nextInt(maze.Width);
-				yWall2 = R.nextInt(maze.Length);
-			}
-			else if(xWall3==xStart && yWall3 == yStart){
-				xWall3 = R.nextInt(maze.Width);
-				yWall3 = R.nextInt(maze.Length);
-			}
-			else if(xWall4==xStart && yWall4 == yStart){
-				xWall4 = R.nextInt(maze.Width);
-				yWall4 = R.nextInt(maze.Length);
-			}
-			else
-				break;
-		}
-		MazeCell cellWall = new MazeCell();
-		cellWall.x = xWall;
-		cellWall.y = yWall;
-		cellWall.Wall = true;
-		maze.mazeGrid[xWall][yWall] = cellWall;
-		
-		cellWall.x = xWall2;
-		cellWall.y = yWall2;
-		cellWall.Wall = true;
-		maze.mazeGrid[xWall2][yWall2] = cellWall;
-		
-		cellWall.x = xWall3;
-		cellWall.y = yWall3;
-		cellWall.Wall = true;
-		maze.mazeGrid[xWall3][yWall3] = cellWall;
-		
-		cellWall.x = xWall4;
-		cellWall.y = yWall4;
-		cellWall.Wall = true;
-		maze.mazeGrid[xWall4][yWall4] = cellWall;
-		
+
 		while(!nodes.isEmpty()){
 			boolean poky = R.nextBoolean();
 			int pokyLoc = R.nextInt(4);
 			MazeCell Current = nodes.pop();
-			if(Current.Wall) continue;
-				if(!Current.vistied){
+			if(!Current.vistied){
 				Current.vistied = true;
 				int right = Current.x + 1;// move 1 steps to the right at a time
 				int left = Current.x - 1; // 1 steps to the left
@@ -95,7 +208,7 @@ public class Maze {
 				// check steps against boundaries of the maze
 				if (right >= maze.Width)
 					right = maze.Width-1;
-				if (left <= 0)
+				if (left < 0)
 					left = 0;
 				if( up >= maze.Length)
 					up = maze.Length-1;
@@ -106,55 +219,59 @@ public class Maze {
 				// if not visited before
 				MazeCell leftCell, rightCell, aboveCell, belowCell;
 
-				if(maze.mazeGrid[right][Current.y] == null ) {
-					// check that the parent node was not on the boundary
-					rightCell = new MazeCell();
+				// break the right wall if the right cell is not visited 
+				if(!maze.mazeGrid[Current.y][right].vistied){
+					Current.wallRight = false;
+					rightCell = maze.mazeGrid[Current.y][right];
 					rightCell.x = right;
 					rightCell.y = Current.y;
 					rightCell.ContainsPock = (pokyLoc==1)?poky:false;
-					maze.mazeGrid[right][Current.y] = rightCell;
-					nodes.add(maze.mazeGrid[right][Current.y]);
+					maze.totalPoky = rightCell.ContainsPock ? maze.totalPoky+1:maze.totalPoky;
+					maze.mazeGrid[Current.y][right] = rightCell;
+					nodes.add(maze.mazeGrid[Current.y][right]);
 				}
-				if(left > 0 && maze.mazeGrid[left][Current.y] == null){
-					leftCell = new MazeCell();
-
-					leftCell.x = right;
-					leftCell.y = Current.y;
+				// break the Left wall if the left cell is not visited 
+				if(!maze.mazeGrid[Current.y][left].vistied){
+					Current.wallLeft = false;
+					leftCell = maze.mazeGrid[Current.y][left];
 					leftCell.ContainsPock = (pokyLoc==2)?poky:false;
-					maze.mazeGrid[left][Current.y] = leftCell;
-					nodes.add(maze.mazeGrid[left][Current.y]);
+					maze.totalPoky = leftCell.ContainsPock ? maze.totalPoky+1:maze.totalPoky;
+					maze.mazeGrid[Current.y][left] = leftCell;
+					nodes.add(maze.mazeGrid[Current.y][left]);
 				}
-				if( up > 0 && maze.mazeGrid[Current.x][up] == null){
-					aboveCell = new MazeCell();
-					aboveCell.x = Current.x;
-					aboveCell.y = up;
+				// break the ceiling if node above not visited
+				if(!maze.mazeGrid[up][Current.x].vistied){
+					Current.wallUp = false;
+					aboveCell = maze.mazeGrid[up][Current.x];
 					aboveCell.ContainsPock = (pokyLoc==3)?poky:false;
-					maze.mazeGrid[Current.x][up] = aboveCell;
-					nodes.add(maze.mazeGrid[Current.x][up]);
+					maze.totalPoky = aboveCell.ContainsPock ? maze.totalPoky+1:maze.totalPoky;
+					maze.mazeGrid[up][Current.x] = aboveCell;
+					nodes.add(maze.mazeGrid[up][Current.x]);
 				}
-				if(down > 0 && maze.mazeGrid[Current.x][down] == null){
-					belowCell = new MazeCell();
-					belowCell.x = Current.x;
-					belowCell.y = down;
+				// break the floor if the node below not visited 
+				if(!maze.mazeGrid[down][Current.x].vistied){
+					Current.wallDown = false;
+					belowCell = maze.mazeGrid[down][Current.x];
 					belowCell.ContainsPock = (pokyLoc==4)?poky:false;
-					maze.mazeGrid[Current.x][down] = belowCell;
-					nodes.add(maze.mazeGrid[Current.x][down]);
+					maze.totalPoky = belowCell.ContainsPock ? maze.totalPoky+1:maze.totalPoky;
+					maze.mazeGrid[down][Current.x] = belowCell;
+					nodes.add(maze.mazeGrid[down][Current.x]);
 				}
 			}
-
 		}
 		// seting the location of the Goal
 		int xGoal = xStart;
 		int yGoal = yStart;
 		while(true){
-			if(xGoal==xStart && yGoal == yStart){
-				xGoal = R.nextInt(maze.Width);
-				yGoal = R.nextInt(maze.Length);
+			if(xGoal== xStart && yGoal == yStart){
+				xGoal = R.nextInt(maze.Width-1);
+				yGoal = R.nextInt(maze.Length-1);
 			}
-			else
+			else{
+				maze.mazeGrid[yGoal][xGoal].isGoal = true;
 				break;
+			}
 		}
-	maze = setwallGoal(maze, xGoal, yGoal);
 		return maze;
 	}
 	/*
@@ -164,38 +281,31 @@ public class Maze {
 		MazeCell[][] Grid = maze.mazeGrid;
 		int numWalls = 0;
 		// set Goal
-		Grid[xGoal][yGoal] = (Grid[xGoal][yGoal]== null)? new MazeCell():Grid[xGoal][yGoal];
-		Grid[xGoal][yGoal].isGoal = true;
-		// set wall if not goal or null 
-		for(int i = 0; i < maze.Width; i++){
-			for(int j = 0; j < maze.Length; j++){
-				if(Grid[i][j] == null)
-				{
-					Grid[i][j] = new MazeCell();
-					Grid[i][j].Wall = true;
-					numWalls++;
-				}
-			}
-		}
-		// poky's egg can hatch in any number of steps that is 
-		//bounded by the number of cells in the grid - walls
-		maze.hatch = (maze.hatch > numWalls)?maze.hatch - numWalls: maze.hatch;
+		Grid[yGoal][xGoal] = (Grid[yGoal][xGoal]== null)? new MazeCell():Grid[yGoal][xGoal];
+		Grid[yGoal][xGoal].isGoal = true;
+		System.out.println(" "+yGoal +"  "+ xGoal);
+		int hatch  = maze.getInitialState().getxHatch();
+
 		return maze;
 	}
+
 	public static void PrintMaze(Maze maze){
 		MazeCell[][] Grid = maze.mazeGrid;
-		for(int i = 0; i < maze.Width; i++){
-			for(int j = 0; j < maze.Length; j++){
-				if(Grid[i][j] == null)
-					System.out.print(" | ");
-			else if(Grid[i][j].Wall)
-				System.out.print(" | ");
-				else if(Grid[i][j].isGoal)
-					System.out.print(" O ");
-				else if(Grid[i][j].ContainsPock)
-					System.out.print(" K ");
-				else
-					System.out.print(" - ");
+		for(int i = 0; i < maze.Length; i++){
+			for(int j = 0; j < maze.Width; j++){
+				if(!Grid[i][j].vistied)
+					System.out.print(" ** ");
+				else{
+					if(Grid[i][j].ContainsPock)
+						System.out.print(" K ");
+					if(Grid[i][j].wallDown ||Grid[i][j].wallUp||Grid[i][j].wallRight||Grid[i][j].wallLeft)
+						System.out.print(" | ");
+					if(Grid[i][j].isGoal)
+						System.out.print(" O ");
+
+					else
+						System.out.print(" - ");
+				}
 			}
 			System.out.println();
 		}
@@ -210,12 +320,14 @@ public class Maze {
  * Maze cells Class
  */
 class MazeCell{
-	boolean vistied, Wall, ContainsPock, isGoal;
+	boolean vistied, wallUp, wallDown, wallRight, wallLeft, ContainsPock, isGoal;
 	int x,y;
 	public MazeCell() {
 		vistied = false;
-		isGoal = false;
-		Wall = false;
+		wallUp = true;
+		wallDown = true;
+		wallRight = true;
+		wallLeft = true;
 		ContainsPock = false;
 	}		
 }

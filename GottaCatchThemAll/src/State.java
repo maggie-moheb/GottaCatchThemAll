@@ -5,7 +5,14 @@ public class State {
 	Direction direction;
 	int pokemonsSoFar;
 	int xHatch;
+	boolean isgoal;
 	
+	public boolean isGoal() {
+		return isgoal;
+	}
+	public void setGoal(boolean goal) {
+		this.isgoal = goal;
+	}
 	// state constructor contains the x and y position on grid
 	// direction of the agent 
 	// pokemon that the agent has not collected so far 
