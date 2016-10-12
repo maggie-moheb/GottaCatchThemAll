@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 public class GottaCatchThemAll extends Problem{
-
+	Maze maze; 
 	@Override
 	public boolean passGoalTest(State currentState) {
 		// TODO Auto-generated method stub
@@ -28,15 +28,14 @@ public class GottaCatchThemAll extends Problem{
 	}
 
 	@Override
+	// city block distance 
 	public void setFirstHeuristic(Node node) {
-		// TODO Auto-generated method stub
-		
+ 		node.heuristicCost = (Math.abs(node.state.x - maze.xGoal) + Math.abs(node.state.y - maze.yGoal)); 		
 	}
 
 	@Override
 	public void setSecondHeuristic(Node node) {
-		// TODO Auto-generated method stub
-		
+		node.heuristicCost = Math.max(node.state.pokemonsSoFar, node.state.xHatch);
 	}
 
 	@Override
