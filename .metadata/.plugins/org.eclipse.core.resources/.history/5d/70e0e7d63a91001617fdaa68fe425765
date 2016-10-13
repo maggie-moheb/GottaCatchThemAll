@@ -1,0 +1,6 @@
+
+public class MinimumSpanningTreeEdge {
+	int weight;
+	Point start;
+	Point end;
+}

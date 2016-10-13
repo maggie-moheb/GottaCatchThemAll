@@ -1,3 +1,4 @@
+import java.awt.Point;
 import java.util.ArrayList;
 
 public abstract class Problem {
@@ -37,7 +38,10 @@ public abstract class Problem {
 	// expand a specific node based on the operators of the problem
 	public abstract ArrayList<Node> expand(Node node);
 	
-	public abstract void setFirstHeuristic(Node node);
+	public void setFirstHeuristic(Node node) {
+		// TODO Auto-generated method stub
+		
+	}
 	public abstract void setSecondHeuristic(Node node);
 	public abstract void setThirdHeuristic(Node node);
 
