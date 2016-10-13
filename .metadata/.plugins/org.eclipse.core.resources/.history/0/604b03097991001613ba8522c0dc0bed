@@ -51,8 +51,7 @@ public class GottaCatchThemAll extends Problem{
 			visitedStates[xnode][ynode][getDirectionInt(node.state.direction)] = node.state.pokemonsSoFar; 
 		if (cleaned == 2)
 			visitedStates[xnode][ynode][getDirectionInt(node.state.direction)] = node.state.xHatch; 
-		if(node.state.pokemonsSoFar <= 0 && cleaned == 1) 
-			emptyVisitedStates();
+
 				
 		// translation possible movements 
 		if (node.state.direction == Direction.NORTH && ((ynode + 1) < maze.Length) && (!maze.mazeGrid[xnode][ynode].wallUp)) {
