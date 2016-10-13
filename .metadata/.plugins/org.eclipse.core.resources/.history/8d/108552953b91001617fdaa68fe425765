@@ -1,0 +1,27 @@
+import java.awt.Point;
+
+public class MinimumSpanningTreeEdge implements Comparable{
+	int weight;
+	Point start;
+	Point end;
+	
+	public MinimumSpanningTreeEdge(Point start, Point end) {
+		this.start = start;
+		this.end = end;
+		this.weight = manheim(start, end);
+	}
+	
+	public static int manheim(Point start, Point end) {
+		return Math.abs(start.x - end.x) + Math.abs(start.y - end.y);
+	}
+	
+	@Override
+	public int compareTo(Object o) {
+		MinimumSpanningTreeEdge edge = (MinimumSpanningTreeEdge)o;
+		if(this.weight > edge.weight) {
+			return 1;
+		}
+		if(edge.weight > this.weight)
+		return 0;
+	}
+}

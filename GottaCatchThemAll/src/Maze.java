@@ -1,3 +1,4 @@
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
@@ -7,6 +8,7 @@ import java.util.Stack;
 public class Maze extends Problem {
 	int Length, Width, totalPoky;
 	MazeCell[][] mazeGrid;
+	public ArrayList<Point> pokemonLocations;
 	int xGoal; 
 	int yGoal; 
 	/*
@@ -66,7 +68,7 @@ public class Maze extends Problem {
 		return false;
 		//return currentState.isgoal && currentState.pokemonsSoFar == totalPoky && currentState.xHatch <= 0;
 	}
-	
+
 	public int goalFunction() {
 		// trans may affect the # of poky, depth, cost and xhatch
 
@@ -321,6 +323,7 @@ public class Maze extends Problem {
 		maze = maze.GeneMaze();
 		PrintMaze(maze);
 	}
+
 	@Override
 	public int pathCostFunction(Node node) {
 		// TODO Auto-generated method stub

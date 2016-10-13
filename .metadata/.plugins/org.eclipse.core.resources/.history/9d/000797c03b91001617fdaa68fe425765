@@ -1,0 +1,49 @@
+import java.awt.Point;
+import java.util.ArrayList;
+
+public class GottaCatchThemAll extends Problem{
+	ArrayList<MinimumSpanningTreeEdge> edges;
+	@Override
+	public boolean passGoalTest(State currentState) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int pathCostFunction(Node node) {
+		int pokemon = node.state.pokemonsSoFar - node.parent.state.pokemonsSoFar;
+		int goal = 0 ;
+		if(passGoalTest(node.state)) {
+			goal = 1;
+		}
+		int xHatch =  node.state.xHatch - node.parent.state.xHatch;
+		node.pathCost = node.parent.pathCost - (20*pokemon + 50* goal + 10*xHatch);
+		// TODO Auto-generated method stub
+		return node.pathCost;
+	}
+
+	@Override
+	public ArrayList<Node> expand(Node node) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setFirstHeuristic(Node node) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setSecondHeuristic(Node node) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setThirdHeuristic(Node node) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

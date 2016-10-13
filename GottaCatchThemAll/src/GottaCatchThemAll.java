@@ -1,6 +1,8 @@
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 public class GottaCatchThemAll extends Problem{
+	ArrayList<MinimumSpanningTreeEdge> edges;
 	Maze maze;
 	int[][][] visitedStates;
 	int cleaned; 
@@ -11,6 +13,7 @@ public class GottaCatchThemAll extends Problem{
 		emptyVisitedStates(); 
 	}
 	public void emptyVisitedStates(){
+
 		this.cleaned = this.cleaned + 1;
 		if (cleaned > 2) return; 
 		for (int i = 0; i < this.visitedStates.length; i++) {
@@ -166,6 +169,21 @@ public class GottaCatchThemAll extends Problem{
 		if(d == Direction.EAST) return 2; 
 		return 3; 
 	}
+
+	public static void main(String[] args) {
+//		State state1 = new State(1, 1, null, 1, 1);
+//		Node node1 = new Node(state1, null, null, 0, 0, -1);
+//		Point point1 = new Point(3,5);
+//		Point point2 = new Point(-6,2);
+//		Point point3 = new Point(0,7);
+//
+//		ArrayList<Point> pokemonLocations = new ArrayList<Point>();
+//		pokemonLocations.add(point1);
+//		pokemonLocations.add(point2);
+//		pokemonLocations.add(point3);
+//		setFirstHeuristic(node1, pokemonLocations);
+//		System.out.println(node1.heuristicCost);
+	}
 	@Override
 	// city block distance 
 	public void setFirstHeuristic(Node node) {
@@ -180,7 +198,26 @@ public class GottaCatchThemAll extends Problem{
 	@Override
 	public void setThirdHeuristic(Node node) {
 		// TODO Auto-generated method stub
-		
+		ArrayList<Point> pokemonLocations = maze.pokemonLocations;
+
+		pokemonLocations.add(new Point(node.state.x, node.state.y));
+		ArrayList<Vertex> vertices = Vertex.convertToVertex(pokemonLocations);
+		ArrayList<MinimumSpanningTreeEdge> edges = MinimumSpanningTreeEdge.convertToEdges(vertices);
+		edges.sort((o1, o2) -> o1.compareTo(o2));
+		ArrayList<MinimumSpanningTreeEdge> minimumSpanningTree = new ArrayList<MinimumSpanningTreeEdge>();
+		for(int i = 0; i<edges.size(); i++) {
+			if(edges.get(i).start.setNo != 1 || edges.get(i).end.setNo != 1) {
+				edges.get(i).start.setNo(1);
+				edges.get(i).end.setNo(1);
+				minimumSpanningTree.add(edges.get(i));
+			}
+		}
+		int heuristic = 0;
+		for(int i = 0; i<minimumSpanningTree.size(); i++) {
+			heuristic += minimumSpanningTree.get(i).weight;
+		}
+		node.heuristicCost = heuristic;
+	
 	}
 
 }
