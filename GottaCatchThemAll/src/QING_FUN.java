@@ -1,7 +1,9 @@
 //different search algorithms to be implemented 
 public enum QING_FUN {
 	UCS,
-	AStar,
+	AStar1,
+	AStar2,
+	AStar3,
 	GR1,
 	GR2,
 	GR3,
