@@ -21,8 +21,11 @@ public class SearchGeneral {
 	}
 	// Qing function for different algorithms 
 	public ArrayList<Node> GeneralQingFunc(QING_FUN algorithm, ArrayList<Node> nodesSoFar,ArrayList<Node> nodesExpanded, Problem problem) {
-		if(algorithm == QING_FUN.UCS) return UniformCostSearchQing(nodesSoFar, nodesExpanded);
-		if(algorithm == QING_FUN.AStar) return AStarQing(nodesSoFar, nodesExpanded);
+		if(algorithm == QING_FUN.UCS) return UniformCostSearchQing(nodesSoFar, nodesExpanded);	
+		if(algorithm == QING_FUN.AStar1) return AStarQing(nodesSoFar, nodesExpanded, 1, problem);
+		if(algorithm == QING_FUN.AStar2) return AStarQing(nodesSoFar, nodesExpanded, 2, problem);
+		if(algorithm == QING_FUN.AStar3) return AStarQing(nodesSoFar, nodesExpanded, 3, problem);
+
 		if(algorithm == QING_FUN.DFS) return DepthFirstSearchQing(nodesSoFar, nodesExpanded); ;
 		if(algorithm == QING_FUN.GR1) return GreedySearchQing(nodesSoFar, nodesExpanded, 1, problem);
 		if(algorithm == QING_FUN.GR2) return GreedySearchQing(nodesSoFar, nodesExpanded, 2, problem);
@@ -68,8 +71,16 @@ public class SearchGeneral {
 		return nodes; 
 	}
 	// Qing function for A* 
-	public ArrayList<Node> AStarQing(ArrayList<Node> nodes, ArrayList<Node> newNodes) {
+	public ArrayList<Node> AStarQing(ArrayList<Node> nodes, ArrayList<Node> newNodes, int heuristic, Problem problem) {
+		for(int i = 0; i<newNodes.size(); i++) {
+			switch(heuristic) {
+				case 1:problem.setFirstHeuristic(newNodes.get(i));break;
+				case 2:problem.setSecondHeuristic(newNodes.get(i));break;
+				case 3:problem.setThirdHeuristic(newNodes.get(i));break;
+			}
+		}
 		nodes.addAll(newNodes);
+		nodes.sort((o1, o2) -> o1.compareToGreedyHeuristic(o2));		
 		nodes.sort((o1, o2) -> o1.compareToHeuristic(o2));
 		return nodes; 
 	}

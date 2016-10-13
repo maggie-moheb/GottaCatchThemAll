@@ -187,7 +187,7 @@ public class Maze extends Problem {
 		Random R = new Random();
 		int xStart = R.nextInt(maze.Width-1);
 		int yStart = R.nextInt(maze.Length-1); 
-		maze.setInitialState(new State(xStart, yStart, Direction.NORTH, 0, 0));
+		maze.setInitialState(new State(xStart, yStart, Direction.NORTH, 0, 0,false));
 		maze.getInitialState().setxHatch(R.nextInt((maze.Width-1)*(maze.Length-1))); // setting x-hatch randomly at max equal to the number of cells in the maze
 		Stack <MazeCell>nodes = new Stack<MazeCell>();
 		MazeCell startCell = new MazeCell();
