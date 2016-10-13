@@ -9,10 +9,14 @@ public class Maze extends Problem {
 	int Length, Width, totalPoky;
 	MazeCell[][] mazeGrid;
 	public ArrayList<Point> pokemonLocations;
+	int xGoal; 
+	int yGoal; 
 	/*
 	 * Create an instance of Maze with random dimensions  
 	 */
 	public Maze(){
+		xGoal = 0; 
+		yGoal = 0; 
 		Random R = new Random();
 		int High = 40; // maximum l/w of any generated maze
 		int Low = 4; //minimum l/w of any generated maze
@@ -64,6 +68,7 @@ public class Maze extends Problem {
 		return false;
 		//return currentState.isgoal && currentState.pokemonsSoFar == totalPoky && currentState.xHatch <= 0;
 	}
+
 	public int goalFunction() {
 		// trans may affect the # of poky, depth, cost and xhatch
 
@@ -179,12 +184,12 @@ public class Maze extends Problem {
 		return possibleMoves;
 	}
 	*/
-	public static Maze GeneMaze(){
+	public Maze GeneMaze(){
 		Maze maze = new Maze(); //create new instance of maze
 		Random R = new Random();
 		int xStart = R.nextInt(maze.Width-1);
 		int yStart = R.nextInt(maze.Length-1); 
-		maze.setInitialState(new State(xStart, yStart, Direction.NORTH, 0, 0));
+		maze.setInitialState(new State(xStart, yStart, Direction.NORTH, 0, 0,false));
 		maze.getInitialState().setxHatch(R.nextInt((maze.Width-1)*(maze.Length-1))); // setting x-hatch randomly at max equal to the number of cells in the maze
 		Stack <MazeCell>nodes = new Stack<MazeCell>();
 		MazeCell startCell = new MazeCell();
@@ -272,6 +277,8 @@ public class Maze extends Problem {
 				break;
 			}
 		}
+		this.xGoal = xGoal; 
+		this.yGoal = yGoal;
 		return maze;
 	}
 	/*
@@ -312,10 +319,31 @@ public class Maze extends Problem {
 
 	}
 	public static void main(String[] args){
-		Maze maze = GeneMaze();
+		Maze maze = new Maze();
+		maze = maze.GeneMaze();
 		PrintMaze(maze);
 	}
 
+	@Override
+	public int pathCostFunction(Node node) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public void setFirstHeuristic(Node node) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void setSecondHeuristic(Node node) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void setThirdHeuristic(Node node) {
+		// TODO Auto-generated method stub
+		
+	}
 }
 /*
  * Maze cells Class

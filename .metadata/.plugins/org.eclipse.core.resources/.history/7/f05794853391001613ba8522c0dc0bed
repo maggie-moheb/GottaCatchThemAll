@@ -1,0 +1,101 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+public class GottaCatchThemAll extends Problem{
+	Maze maze;
+	int[][][] visitedStates;
+	int cleaned; 
+	public GottaCatchThemAll(Maze maze) {
+		this.maze = maze; 
+		this.visitedStates = new int [maze.Length][maze.Width][4];
+		cleaned = 0; 
+		emptyVisitedStates(); 
+	}
+	public void emptyVisitedStates(){
+		this.cleaned = this.cleaned + 1; 
+		for (int i = 0; i < this.visitedStates.length; i++) {
+			for(int j = 0; j < this.visitedStates[i].length; j++) {
+				for(int k = 0; k < this.visitedStates[i][j].length; k ++) 
+					this.visitedStates[i][j][k] = -1; 
+			}
+		}
+	}
+	@Override
+	public boolean passGoalTest(State currentState) {
+		if(maze.mazeGrid[currentState.x][currentState.y].isGoal && currentState.pokemonsSoFar <= 0 && currentState.xHatch <= 0 )
+			return true;
+		return false;
+	}
+
+	@Override
+	public int pathCostFunction(Node node) {
+		int pokemon = node.state.pokemonsSoFar - node.parent.state.pokemonsSoFar;
+		int goal = 0 ;
+		if(passGoalTest(node.state)) {
+			goal = 1;
+		}
+		int xHatch =  node.state.xHatch - node.parent.state.xHatch;
+		node.pathCost = node.parent.pathCost - (20*pokemon + 50* goal + 10*xHatch);
+		// TODO Auto-generated method stub
+		return node.pathCost;
+	}
+
+	@Override
+	public ArrayList<Node> expand(Node node) {
+		// alef yemin wala shemal wala la2 
+		// f wall odami wala la2 
+		// only comparing pokemon
+		ArrayList<Node> possibleMovements = new ArrayList<Node>();
+		int xnode = node.state.x; 
+		int ynode = node.state.y;
+		int xTranslate = xnode;
+		int yTranslate = ynode; 
+		if (node.state.direction == Direction.NORTH && ynode < maze.Length && (!maze.mazeGrid[xnode][ynode].wallUp)) {
+			yTranslate = yTranslate + 1;
+			int pokemonNode = node.state.pokemonsSoFar;
+			if (maze.mazeGrid[xnode][yTranslate].ContainsPock) 
+				pokemonNode = pokemonNode - 1;
+			State translate = new State(xnode,yTranslate,Direction.NORTH,
+					pokemonNode,node.state.xHatch -1, false);
+			boolean isgoal = passGoalTest(translate) ; 
+			translate.isgoal = isgoal; 
+			Node newNode = new Node(translate,node,Operator.TRANSLATE,node.depth + 1,0, 0, isgoal);
+			pathCostFunction(newNode); 
+			
+		}
+			 
+		if (node.state.direction == Direction.SOUTH) yTranslate = yTranslate - 1;
+		if (node.state.direction == Direction.EAST) xTranslate = xTranslate + 1;
+		if (node.state.direction == Direction.WEST) xTranslate = xTranslate + 1;
+		
+		if (cleaned == 1) {
+			if(node.state.pokemonsSoFar != visitedStates[node.state.x][node.state.y][getDirectionInt(node.state.direction)]) {
+				
+			}
+		}
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public int getDirectionInt(Direction d) {
+		if(d == Direction.NORTH) return 0; 
+		if(d == Direction.SOUTH) return 1;
+		if(d == Direction.EAST) return 2; 
+		return 3; 
+	}
+	@Override
+	// city block distance 
+	public void setFirstHeuristic(Node node) {
+ 		node.heuristicCost = (Math.abs(node.state.x - maze.xGoal) + Math.abs(node.state.y - maze.yGoal)); 		
+	}
+
+	@Override
+	public void setSecondHeuristic(Node node) {
+		node.heuristicCost = Math.max(node.state.pokemonsSoFar, node.state.xHatch);
+	}
+
+	@Override
+	public void setThirdHeuristic(Node node) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
