@@ -37,9 +37,9 @@ public class SearchGeneral {
 	public ArrayList<Node> GreedySearchQing(ArrayList<Node> nodes, ArrayList<Node> children, int heuristic, Problem problem) {
 		for(int i = 0; i<children.size(); i++) {
 			switch(heuristic) {
-				case 1:problem.setFirstHeuristic(children.get(i));break;
-				case 2:problem.setSecondHeuristic(children.get(i));break;
-				case 3:problem.setThirdHeuristic(children.get(i));break;
+				case 1:problem.setFirstHeuristic(nodes.get(i));break;
+				case 2:problem.setSecondHeuristic(nodes.get(i));break;
+				case 3:problem.setThirdHeuristic(nodes.get(i));break;
 			}
 		}
 		nodes.addAll(children);
