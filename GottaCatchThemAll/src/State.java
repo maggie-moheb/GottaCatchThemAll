@@ -17,12 +17,13 @@ public class State {
 	// direction of the agent 
 	// pokemon that the agent has not collected so far 
 	// xHatch is the steps remaining for the egg to hatch 
-	public State(int x, int y, Direction d, int p, int xH) {
+	public State(int x, int y, Direction d, int p, int xH,boolean goal) {
 		this.x = x; 
 		this.y = y; 
 		this.direction = d; 
 		this.pokemonsSoFar = p; 
 		this.xHatch = xH;
+		this.isgoal = goal;
 	}
 	public int getX() {
 		return x;

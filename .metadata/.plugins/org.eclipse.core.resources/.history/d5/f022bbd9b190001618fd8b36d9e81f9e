@@ -1,0 +1,43 @@
+import java.util.ArrayList;
+
+public class GottaCatchThemAll extends Problem{
+
+	@Override
+	public boolean passGoalTest(State currentState) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int pathCostFunction(Node node) {
+		int pokemon = node.parent.state.pokemonsSoFar - node.state.pokemonsSoFar;
+		node.pathCost = node.parent.pathCost;
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public ArrayList<Node> expand(Node node) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setFirstHeuristic(Node node) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setSecondHeuristic(Node node) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setThirdHeuristic(Node node) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

@@ -1,11 +1,8 @@
 import java.awt.Point;
-import java.awt.geom.Point2D;
-import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
-import org.omg.CosNaming.NamingContextExtPackage.AddressHelper;
 
 
 
@@ -15,10 +12,14 @@ public class Maze{
 	int xhatch;
 	MazeCell[][] mazeGrid;
 	public ArrayList<Point> pokemonLocations;
+	int xGoal; 
+	int yGoal; 
 	/*
 	 * Create an instance of Maze with random dimensions  
 	 */
 	public Maze(){
+		xGoal = 0; 
+		yGoal = 0; 
 		Random R = new Random();
 		pokemonLocations = new ArrayList<Point>();
 		int High = 10; // maximum l/w of any generated maze
@@ -63,11 +64,10 @@ public class Maze{
 	}
 
 
-
 	/*
 	 * Randomly generate a maze configuration   
 	 */
-	public static Maze GeneMaze(){
+	public Maze GeneMaze(){
 		Maze maze = new Maze(); //create new instance of maze
 		Random R = new Random();
 		Random R2 = new Random();
@@ -360,7 +360,9 @@ public class Maze{
 				break;
 			}
 		}
-		System.out.println(xGoal+" , "+ yGoal +" "+maze.mazeGrid[xGoal][yGoal].isGoal);
+//		System.out.println(xGoal+" , "+ yGoal +" "+maze.mazeGrid[xGoal][yGoal].isGoal);
+		this.xGoal = xGoal; 
+		this.yGoal = yGoal;
 		return maze;
 	}
 //	/*
@@ -465,9 +467,11 @@ public class Maze{
 		//		}
 	}
 	public static void main(String[] args){
-		Maze maze = GeneMaze();
+		Maze maze = new Maze();
+		maze = maze.GeneMaze();
 		PrintMaze(maze);
 	}
+
 }
 /*
  * Maze cells Class

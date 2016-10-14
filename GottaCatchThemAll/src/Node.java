@@ -1,26 +1,37 @@
 
-public class Node {
+public class Node implements Comparable{
 	State state;
 	Node parent;
 	Operator operator;
 	int depth;
 	int pathCost;
+	int heuristicCost; 
 	
 	// create the root of the tree
+	// heuristic is set to zero at root which is wrong 
 	public Node MakeNode(State state) {
-		return new Node(state,null,Operator.nill, 0,0);
+		return new Node(state,null,Operator.nill, 0,0,0,false);
 	}
 	public Node() {	
 	}
+	// just for testing 
+	public Node(int p) {
+		this.state = null;
+		this.parent = null; 
+		this.operator = null; 
+		this.depth = 0; 
+		this.pathCost = p;
+	}
 	
 	// node constructor: State, operator used to reach this node, depth of the node, path cost to reach the node 
-	public Node(State s, Node parent, Operator operator, int depth,int pathCost) {
-		State state = new State(s.x, s.y, s.direction,s.pokemonsSoFar,s.xHatch); 
+	public Node(State s, Node parent, Operator operator, int depth,int pathCost, int heuristicCost, boolean goal) {
+		State state = new State(s.x, s.y, s.direction,s.pokemonsSoFar,s.xHatch,goal); 
 		this.state = state;
 		this.parent = parent; 
 		this.operator = operator; 
 		this.depth = depth; 
 		this.pathCost = pathCost; 
+		this.heuristicCost = heuristicCost; 
 	}
 	public State getState() {
 		return state;
@@ -52,6 +63,26 @@ public class Node {
 	public void setPathCost(int pathCost) {
 		this.pathCost = pathCost;
 	}
-	
-	
+	public int compareTo(Object o) {
+		Node node = (Node) o;
+		if(pathCost > node.pathCost) return 1; 
+		if(pathCost < node.pathCost) return -1; 
+		return 0; 
+	}
+	public int compareToHeuristic(Object o) {
+		Node node = (Node) o;
+		int cost = pathCost + heuristicCost; 
+		int nodeCost = node.pathCost + node.heuristicCost; 
+		if(cost > nodeCost) return 1; 
+		if(cost < nodeCost) return -1; 
+		return 0; 
+	}
+	public int compareToGreedyHeuristic(Object o) {
+		Node node = (Node) o;
+		int cost = heuristicCost; 
+		int nodeCost = node.heuristicCost; 
+		if(cost > nodeCost) return 1; 
+		if(cost < nodeCost) return -1; 
+		return 0; 
+	}
 }

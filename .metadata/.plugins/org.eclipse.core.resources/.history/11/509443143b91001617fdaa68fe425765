@@ -1,0 +1,13 @@
+import java.awt.Point;
+
+public class MinimumSpanningTreeEdge {
+	int weight;
+	Point start;
+	Point end;
+	
+	public MinimumSpanningTreeEdge(Point start, Point end) {
+		this.start = start;
+		this.end = end;
+		this.weight = Manheim(start, end);
+	}
+}

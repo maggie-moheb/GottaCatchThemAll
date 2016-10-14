@@ -1,0 +1,11 @@
+import java.awt.Point;
+
+public class MinimumSpanningTreeEdge {
+	int weight;
+	Point start;
+	Point end;
+	
+	public MinimumSpanningTreeEdge() {
+		
+	}
+}
