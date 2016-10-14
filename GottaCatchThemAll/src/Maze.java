@@ -26,8 +26,8 @@ public class Maze{
 		int Low = 4; //minimum l/w of any generated maze
 		Length = R.nextInt(High - Low) + Low;
 		Width = R.nextInt(High - Low) + Low;
-		//		Length = 4;
-		//		Width = 4;
+		Length = 4;
+		Width = 4;
 		mazeGrid = intiGrid(new MazeCell[Width][Length]); 		
 	}
 	public MazeCell[][] intiGrid(MazeCell[][] grid){
@@ -116,51 +116,60 @@ public class Maze{
 			if(right!= -100 && !maze.mazeGrid[right][Current.y].vistied){
 				//				neighbors.add(new Point(right, Current.y));
 				rightCell = maze.mazeGrid[right][Current.y];
-				rightCell.ContainsPock = (pokyLoc==0)?poky:false;
-				maze.totalPoky = rightCell.ContainsPock ? maze.totalPoky+1:maze.totalPoky;
-				//								maze.mazeGrid[right][Current.y] = rightCell;
 				rgt = true;
-//				System.out.println("Right child x, y : "+ right+" "+Current.y);
-				if(rightCell.ContainsPock)maze.pokemonLocations.add(new Point(right, Current.y));
+				if(pokyLoc == 0){
+					if(poky){
+						maze.mazeGrid[right][Current.y].ContainsPock = true;
+						maze.totalPoky = maze.totalPoky + 1;
+						maze.pokemonLocations.add(new Point(right, Current.y));
+					}
+				}
 			}
 			// insert 
 			// break the Left wall if the left cell is not visited 
 			if( left!= -100 && !maze.mazeGrid[left][Current.y].vistied ){
 				leftCell = maze.mazeGrid[left][Current.y];
-				leftCell.ContainsPock = (pokyLoc==1)?poky:false;
-				maze.totalPoky = leftCell.ContainsPock ? maze.totalPoky+1:maze.totalPoky;
 				//				maze.mazeGrid[left][Current.y] = leftCell;
 				Lft = true;
+				if(pokyLoc == 1){
+					if(poky){
+						maze.mazeGrid[left][Current.y].ContainsPock = true;
+						maze.totalPoky = maze.totalPoky + 1;
+						maze.pokemonLocations.add(new Point(left, Current.y));
+					}
+				}
 				//				neighbors.add(new Point(left, Current.y));
-//				System.out.println("Left child x, y : "+ left+" "+Current.y);
+				//				System.out.println("Left child x, y : "+ left+" "+Current.y);
 
-				if(leftCell.ContainsPock)maze.pokemonLocations.add(new Point(left, Current.y));
 			}
 			// break the ceiling if node above not visited
 			if( up!= -100 && !maze.mazeGrid[Current.x][up].vistied){
 				aboveCell = maze.mazeGrid[Current.x][up];
-				aboveCell.ContainsPock = (pokyLoc==2)?poky:false;
-				maze.totalPoky = aboveCell.ContainsPock ? maze.totalPoky+1:maze.totalPoky;
-				//				maze.mazeGrid[Current.x][up] = aboveCell;
-				//				neighbors.add(new Point(Current.x, up));
-//				System.out.println("above child x, y : "+ Current.x+" "+up);
-
 				u = true;
-				if(aboveCell.ContainsPock)maze.pokemonLocations.add(new Point(Current.x, up));
+				if(pokyLoc == 2){
+					if(poky){
+						maze.mazeGrid[Current.x][up].ContainsPock = true;
+						maze.totalPoky = maze.totalPoky + 1;
+						maze.pokemonLocations.add(new Point(Current.x,up));
+					}
+				}
 
 			}
 
 			// break the floor if the node below not visited 
 			if( down!= -100 && !maze.mazeGrid[Current.x][down].vistied ){
-				belowCell = maze.mazeGrid[Current.x][down];
-				belowCell.ContainsPock = (pokyLoc==3)?poky:false;
-				maze.totalPoky = belowCell.ContainsPock ? maze.totalPoky+1:maze.totalPoky;
-				//				maze.mazeGrid[Current.x][down] = belowCell;
+				belowCell = maze.mazeGrid[Current.x][down];				//				maze.mazeGrid[Current.x][down] = belowCell;
 				d = true;
+				if(pokyLoc == 3){
+					if(poky){
+						maze.mazeGrid[Current.x][down].ContainsPock = true;
+						maze.totalPoky = maze.totalPoky + 1;
+						maze.pokemonLocations.add(new Point(Current.x, down));
+					}
+				}
 				//				neighbors.add(new Point(Current.x, down));
-//				System.out.println("below child x, y : "+ Current.x+" "+down);
+				//				System.out.println("below child x, y : "+ Current.x+" "+down);
 
-				if(belowCell.ContainsPock)maze.pokemonLocations.add(new Point(Current.x, down));
 			}
 			randomCell.add(0);
 			randomCell.add(1);
@@ -172,66 +181,66 @@ public class Maze{
 				if(Current.x == Current.parent.x +1){
 					maze.mazeGrid[Current.x][Current.y].wallLeft = false;
 					maze.mazeGrid[Current.parent.x][Current.parent.y].wallRight = false;
-//					System.out.println("Break right x,y:"+Current.x+" , "+Current.y);
+					//					System.out.println("Break right x,y:"+Current.x+" , "+Current.y);
 				}
 				else if(Current.x == Current.parent.x - 1){
 					maze.mazeGrid[Current.x][Current.y].wallRight = false;
 					maze.mazeGrid[Current.parent.x][Current.parent.y].wallLeft = false;
-//					System.out.println("Break left x,y:"+Current.x+" , "+Current.y);
+					//					System.out.println("Break left x,y:"+Current.x+" , "+Current.y);
 
 				}
 				else if(Current.y == Current.parent.y +1){
 					maze.mazeGrid[Current.x][Current.y].wallDown = false;
 					maze.mazeGrid[Current.parent.x][Current.parent.y].wallUp = false;
-//					System.out.println("Break up x,y:"+Current.x+" , "+Current.y);
+					//					System.out.println("Break up x,y:"+Current.x+" , "+Current.y);
 				}
 				else if(Current.y == Current.parent.y -1){
 					maze.mazeGrid[Current.x][Current.y].wallUp = false;
 					maze.mazeGrid[Current.parent.x][Current.parent.y].wallDown = false;
-//					System.out.println("Break down x,y:"+Current.x+" , "+Current.y);
+					//					System.out.println("Break down x,y:"+Current.x+" , "+Current.y);
 				} else{
 
-//					System.out.println("Inner else break case Parent: x, y "+ Current.parent.x + " ," + Current.parent.y);
-//					System.out.println("Current "+ Current.x + " ," + Current.y);
+					//					System.out.println("Inner else break case Parent: x, y "+ Current.parent.x + " ," + Current.parent.y);
+					//					System.out.println("Current "+ Current.x + " ," + Current.y);
 
 				}
 				//				continue;
 			}
 			else{
-//				System.out.println("Outer else break case");
+				//				System.out.println("Outer else break case");
 			}
 			while(!randomCell.isEmpty()){
 				if(randomCell.get(randomVisit) == 0){
 					if(rgt){
 						maze.mazeGrid[right][Current.y].parent = Current;
 						nodes.push(maze.mazeGrid[right][Current.y]);
-//						System.out.println("Push right");
-//						System.out.println("parent x, y :"+ Current.x +" " + Current.y);
+						//						System.out.println("Push right");
+						//						System.out.println("parent x, y :"+ Current.x +" " + Current.y);
 					}
 				}
 				else if(randomCell.get(randomVisit)== 1){
 					if(Lft){
-//						System.out.println("Push left");
+						//						System.out.println("Push left");
 						maze.mazeGrid[left][Current.y].parent = Current;
 						nodes.push(maze.mazeGrid[left][Current.y]);	
-//						System.out.println("parent x, y :"+ Current.x +" " + Current.y);
+						//						System.out.println("parent x, y :"+ Current.x +" " + Current.y);
 					}
 				}
 				else if(randomCell.get(randomVisit)== 2){
 					if(u){
 						maze.mazeGrid[Current.x][up].parent = Current;
-//						System.out.println("Push up");
+						//						System.out.println("Push up");
 						nodes.push(maze.mazeGrid[Current.x][up]);
-//						System.out.println("parent x, y :"+ Current.x +" " + Current.y);
+						//						System.out.println("parent x, y :"+ Current.x +" " + Current.y);
 
 					}
 				}
 				else if(randomCell.get(randomVisit) == 3){
 					if(d){
 						maze.mazeGrid[Current.x][down].parent = Current;
-//						System.out.println("Push down");
+						//						System.out.println("Push down");
 						nodes.push(maze.mazeGrid[Current.x][down]);
-//						System.out.println("parent x, y :"+ Current.x +" " + Current.y);
+						//						System.out.println("parent x, y :"+ Current.x +" " + Current.y);
 
 					}
 				}
@@ -360,66 +369,66 @@ public class Maze{
 				break;
 			}
 		}
-//		System.out.println(xGoal+" , "+ yGoal +" "+maze.mazeGrid[xGoal][yGoal].isGoal);
+		//		System.out.println(xGoal+" , "+ yGoal +" "+maze.mazeGrid[xGoal][yGoal].isGoal);
 		this.xGoal = xGoal; 
 		this.yGoal = yGoal;
 		return maze;
 	}
-//	/*
-//	 * A method to display the 
-//	 */
-//	public static Maze VisitedChildren(Maze m, MazeCell cnn, MazeCell peek){
-//		int right = cnn.x + 1;
-//		int left = cnn.x - 1;
-//		int up = cnn.y + 1;
-//		int down = cnn.y -1;
-//		int curx = peek.x;
-//		int cury = peek.y;
-//		if (right >= m.Width)
-//			right = -100;
-//		if (left < 0)
-//			left = -100;
-//		if( up >= m.Length)
-//			up = -100;
-//		if(down < 0)
-//			down = -100;
-//		boolean allvisited = true;
-//		// right child not visited 
-//		if( right != -100 && !m.mazeGrid[right][cury].vistied&& right == curx && cnn.y == cury){
-//			m.mazeGrid[right][cury].wallLeft = false;
-//			m.mazeGrid[curx][cury].wallRight = false;
-//			System.out.println("IN1");
-//			allvisited = false;
-//			//			neighStack.push(m.mazeGrid[right][cury]);
-//		}
-//		// left child not visited 
-//		if(left!= -100 && !m.mazeGrid[left][cury].vistied && left == curx && cnn.y == cury ){
-//			m.mazeGrid[left][cury].wallRight = false;
-//			m.mazeGrid[curx][cury].wallLeft = false;
-//			System.out.println("IN2");
-//			allvisited = false;
-//			//			neighStack.push( m.mazeGrid[left][cury]);
-//
-//		}
-//		// above child not visited 
-//		if(up!= -100 && !m.mazeGrid[curx][up].vistied &&  cnn.x == curx && up == cury ){
-//			m.mazeGrid[curx][up].wallDown = false;
-//			m.mazeGrid[curx][cury].wallUp = false;
-//			System.out.println("IN3");
-//			allvisited = false;
-//			//			neighStack.push(m.mazeGrid[curx][up]);
-//
-//		}
-//		// below child not visited 
-//		if(down != -100 && !m.mazeGrid[curx][down].vistied && cnn.x == curx && down == cury){
-//			m.mazeGrid[curx][down].wallUp = false;
-//			m.mazeGrid[curx][cury].wallDown = false;
-//			System.out.println("IN4");
-//			allvisited = false;
-//
-//		}
-//		return !allvisited?m:null;
-//	}
+	//	/*
+	//	 * A method to display the 
+	//	 */
+	//	public static Maze VisitedChildren(Maze m, MazeCell cnn, MazeCell peek){
+	//		int right = cnn.x + 1;
+	//		int left = cnn.x - 1;
+	//		int up = cnn.y + 1;
+	//		int down = cnn.y -1;
+	//		int curx = peek.x;
+	//		int cury = peek.y;
+	//		if (right >= m.Width)
+	//			right = -100;
+	//		if (left < 0)
+	//			left = -100;
+	//		if( up >= m.Length)
+	//			up = -100;
+	//		if(down < 0)
+	//			down = -100;
+	//		boolean allvisited = true;
+	//		// right child not visited 
+	//		if( right != -100 && !m.mazeGrid[right][cury].vistied&& right == curx && cnn.y == cury){
+	//			m.mazeGrid[right][cury].wallLeft = false;
+	//			m.mazeGrid[curx][cury].wallRight = false;
+	//			System.out.println("IN1");
+	//			allvisited = false;
+	//			//			neighStack.push(m.mazeGrid[right][cury]);
+	//		}
+	//		// left child not visited 
+	//		if(left!= -100 && !m.mazeGrid[left][cury].vistied && left == curx && cnn.y == cury ){
+	//			m.mazeGrid[left][cury].wallRight = false;
+	//			m.mazeGrid[curx][cury].wallLeft = false;
+	//			System.out.println("IN2");
+	//			allvisited = false;
+	//			//			neighStack.push( m.mazeGrid[left][cury]);
+	//
+	//		}
+	//		// above child not visited 
+	//		if(up!= -100 && !m.mazeGrid[curx][up].vistied &&  cnn.x == curx && up == cury ){
+	//			m.mazeGrid[curx][up].wallDown = false;
+	//			m.mazeGrid[curx][cury].wallUp = false;
+	//			System.out.println("IN3");
+	//			allvisited = false;
+	//			//			neighStack.push(m.mazeGrid[curx][up]);
+	//
+	//		}
+	//		// below child not visited 
+	//		if(down != -100 && !m.mazeGrid[curx][down].vistied && cnn.x == curx && down == cury){
+	//			m.mazeGrid[curx][down].wallUp = false;
+	//			m.mazeGrid[curx][cury].wallDown = false;
+	//			System.out.println("IN4");
+	//			allvisited = false;
+	//
+	//		}
+	//		return !allvisited?m:null;
+	//	}
 	public static void PrintMaze(Maze maze){
 		MazeCell[][] Grid = maze.mazeGrid;
 		String [][] MazePrint = new String[maze.Width*2][maze.Length*2];
@@ -457,7 +466,7 @@ public class Maze{
 			System.out.println(current);
 			System.out.println(wallsDown);
 		}
-		//		for(int i = 0; i <3 ; i++){
+		//		for(int i = 0; i ❤ ; i++){
 		//			for(int j = 0; j < maze.Width*2; j++){
 		//				String current  = MazePrint[j][i]; 
 		//				if(current != null)
@@ -469,6 +478,11 @@ public class Maze{
 	public static void main(String[] args){
 		Maze maze = new Maze();
 		maze = maze.GeneMaze();
+		System.out.println(maze.pokemonLocations.size());
+		for(int i = 0; i< maze.pokemonLocations.size(); i++){
+			System.out.println(maze.pokemonLocations.get(i).toString() );
+			System.out.println(maze.mazeGrid[maze.pokemonLocations.get(i).x][maze.pokemonLocations.get(i).y].ContainsPock);
+		}
 		PrintMaze(maze);
 	}
 
