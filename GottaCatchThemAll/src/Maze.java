@@ -447,9 +447,57 @@ public class Maze{
 					current += "  ";
 				if(Grid[i][j].ContainsPock && Grid[i][j].isGoal)
 					current += "po";
+				else if(i == maze.intialSate.x && j == maze.intialSate.y)current += " A";
 				else if(Grid[i][j].isGoal)
 					current += " O";
 				else if(Grid[i][j].ContainsPock)
+					current += " p";
+				else 
+					current+= " *";
+				if(Grid[i][j].wallRight)
+					current +="| ";
+				else
+					current +="  ";
+				if(Grid[i][j].wallDown)
+					wallsDown += "  --  ";
+				else
+					wallsDown += "      ";
+			}
+			System.out.println(wallsUp);
+			System.out.println(current);
+			System.out.println(wallsDown);
+		}
+		//		for(int i = 0; i ❤ ; i++){
+		//			for(int j = 0; j < maze.Width*2; j++){
+		//				String current  = MazePrint[j][i]; 
+		//				if(current != null)
+		//				System.out.print(current);
+		//			}
+		//			System.out.println();
+		//		}
+	}
+	public static void Print_Maze(Maze maze){
+		MazeCell[][] Grid = maze.mazeGrid;
+		String [][] MazePrint = new String[maze.Width*2][maze.Length*2];
+		String wallsUp, wallsDown, current;	
+		for(int j =  maze.Length -1; j >=0; j--){
+			wallsUp = ""; wallsDown = "";current = "";
+			for(int i = 0; i < maze.Width; i++){
+				if (!Grid[i][j].vistied) System.out.println("rrrr");;
+				if(Grid[i][j].wallUp)
+					wallsUp += "  --  ";
+				else
+					wallsUp += "      ";
+				if(Grid[i][j].wallLeft)
+					current += " |";
+				else
+					current += "  ";
+				if(maze.pokemonLocations.contains(new Point(i, j))&& Grid[i][j].isGoal)
+					current += "po";
+				else if(i == maze.intialSate.x && j == maze.intialSate.y)current += " A";
+				else if(Grid[i][j].isGoal)
+					current += " O";
+				else if(maze.pokemonLocations.contains(new Point(i, j)))
 					current += " p";
 				else 
 					current+= " *";

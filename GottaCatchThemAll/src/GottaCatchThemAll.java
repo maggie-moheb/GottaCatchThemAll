@@ -107,7 +107,7 @@ public class GottaCatchThemAll extends Problem{
 			//	return new ArrayList<Node>(); 
 			//}
 			//else 
-			System.out.println("la2etha abl keda");
+			//System.out.println("la2etha abl keda");
 			return new ArrayList<Node>(); 
 		}
 		else statesSoFar.add(node.state);
@@ -343,7 +343,7 @@ public class GottaCatchThemAll extends Problem{
 		Maze maze = new Maze();
 		maze = maze.GeneMaze();
 		Maze.PrintMaze(maze);
-		GottaCatchThemAll gottaCatchThemAll = new GottaCatchThemAll(maze);
+//		GottaCatchThemAll gottaCatchThemAll = new GottaCatchThemAll(maze);
 	//System.out.println(maze.pokemonLocations.size());
 //
 //		gottaCatchThemAll.maze.pokemonLocations.remove(0);
@@ -351,8 +351,9 @@ public class GottaCatchThemAll extends Problem{
 //		System.out.println(maze.pokemonLocations.size());
 
 		SearchGeneral search = new SearchGeneral();
-		Node node = search.General_Search(gottaCatchThemAll, QING_FUN.AStar2);
-		System.out.println("NODE: "+ node);
-		System.out.println(node.state.x +", "+ node.state.y+ " GOAL?: "+ gottaCatchThemAll.passGoalTest(node.state));
+		search.Search(maze, QING_FUN.AStar2, true);
+		//Node node = search.General_Search(gottaCatchThemAll, QING_FUN.AStar2);
+		//System.out.println("NODE: "+ node + " Expanded nodes = " + search.expandedNode);
+		//System.out.println(node.state.x +", "+ node.state.y+ " GOAL?: "+ gottaCatchThemAll.passGoalTest(node.state));
 	}
 }

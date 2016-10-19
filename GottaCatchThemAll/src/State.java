@@ -42,7 +42,7 @@ public class State {
 		if(this.x == state.x && this.y == state.y && this.direction == state.direction && this.pokemonsSoFar == state.pokemonsSoFar){
 			// di kanet a5er 7aga sha3'ala 
 			if(this.pokemonsSoFar == 0 && this.xHatch >= 0 && this.xHatch != state.xHatch) return false;
-			//if(this.pokemonsSoFar > 0 && this.xHatch != state.xHatch) return false;
+			//if(this.pokemonsSoFar > 0 && this.xHatch < 0) return false;
 			return true;
 		}
 		return false; 

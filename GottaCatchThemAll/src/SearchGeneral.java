@@ -7,6 +7,46 @@ import java.util.ArrayList;
 public class SearchGeneral {
 	Node root;
 	int MAX_DEPTH = 0;
+	int expandedNode = 0; 
+	ArrayList<Node> path = new ArrayList<Node>();
+	public Node Search (Maze maze, QING_FUN qing_fun, boolean visualize) {
+		GottaCatchThemAll gottaCatchThemAll = new GottaCatchThemAll(maze);
+		Node node = General_Search(gottaCatchThemAll,qing_fun);
+		if (visualize) 
+			get_path(node,maze);
+		System.out.println("NODE: "+ node + " Expanded nodes = " + this.expandedNode);
+		System.out.println(node.state.x +", "+ node.state.y+ " GOAL?: "+ gottaCatchThemAll.passGoalTest(node.state));
+		return node; 
+	}
+	void get_path(Node node, Maze maze) {
+		Node currentNode = node;
+		while(currentNode != null) {
+			path.add(currentNode);
+			currentNode = currentNode.parent;
+		}
+		for(int i = path.size()-1; i>=0; i--) {
+			maze.pokemonLocations = new ArrayList<Point>();
+			for(int j = 0; j < path.get(i).state.pokLocation.size(); j++) {
+				maze.pokemonLocations.add(path.get(i).state.pokLocation.get(j));
+			}
+			maze.intialSate.x = path.get(i).state.x; 
+			maze.intialSate.y = path.get(i).state.y;
+			Maze.Print_Maze(maze);
+			System.out.println("+++++++++++++++++++++++++++++++++++++++++");
+		}
+	}
+	void print_path(Node node, Maze maze) {
+		if(node == null)  return; 
+		print_path(node.parent,maze); 
+		maze.pokemonLocations = new ArrayList<Point>();
+		for(int i = 0; i < node.state.pokLocation.size(); i++) {
+			maze.pokemonLocations.add(node.state.pokLocation.get(i));
+		}
+		maze.intialSate.x = node.state.x; 
+		maze.intialSate.y = node.state.y;
+		Maze.PrintMaze(maze);
+		System.out.println("+++++++++++++++++++++++++++++++++++++++++");
+	}
 	public Node General_Search(Problem problem, QING_FUN qing_fun) {
 		root = new Node(); 
 		root = root.MakeNode(problem.initialState);
@@ -18,14 +58,14 @@ public class SearchGeneral {
 			if (nodes.size() == 0) return null; 
 			Node front = nodes.remove(0);
 
-			System.out.println("ANA BASEARCH: "+ front.depth);
-			System.out.println("POK MAZE: "+ ((GottaCatchThemAll) problem).maze.pokemonLocations.size());
-			System.out.println("pok: "+ front.state.pokLocation.size());
+//			System.out.println("ANA BASEARCH: "+ front.depth);
+//			System.out.println("POK MAZE: "+ ((GottaCatchThemAll) problem).maze.pokemonLocations.size());
+//			System.out.println("pok: "+ front.state.pokLocation.size());
 			if (problem.passGoalTest(front.state)) return front;
 //			if(front.depth == 5) {
 //				return null;
 //			}
-			ArrayList<Node> children = problem.expand(front);
+			ArrayList<Node> children = problem.expand(front); expandedNode ++;
 			nodes = GeneralQingFunc(qing_fun, nodes, children, problem);
 		}
 	}
