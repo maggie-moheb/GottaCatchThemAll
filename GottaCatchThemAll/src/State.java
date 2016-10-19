@@ -1,3 +1,5 @@
+import java.awt.Point;
+import java.util.ArrayList;
 
 public class State {
 	int x;
@@ -6,7 +8,7 @@ public class State {
 	int pokemonsSoFar;
 	int xHatch;
 	boolean isgoal;
-	
+	ArrayList <Point> pokLocation; 
 	public boolean isGoal() {
 		return isgoal;
 	}
@@ -17,13 +19,33 @@ public class State {
 	// direction of the agent 
 	// pokemon that the agent has not collected so far 
 	// xHatch is the steps remaining for the egg to hatch 
-	public State(int x, int y, Direction d, int p, int xH,boolean goal) {
+	public State(int x, int y, Direction d, int p, int xH,boolean goal,ArrayList<Point> pok) {
 		this.x = x; 
 		this.y = y; 
 		this.direction = d; 
 		this.pokemonsSoFar = p; 
 		this.xHatch = xH;
 		this.isgoal = goal;
+		this.pokLocation = new ArrayList<Point>();
+		for (int i = 0; i < pok.size(); i++)
+			this.pokLocation.add(pok.get(i));
+		if (pok.contains(new Point(this.x,this.y))) {
+			this.pokLocation.remove(new Point(this.x,this.y));
+			//this.pokemonsSoFar = this.pokemonsSoFar - 1; 
+			this.pokemonsSoFar = this.pokLocation.size();
+		}
+	}
+	public boolean equals(State state) {
+		//if(this.x == state.x && this.y == state.y && this.direction == state.direction && this.pokemonsSoFar == state.pokemonsSoFar && this.xHatch == state.xHatch)
+		//	return true;
+			
+		if(this.x == state.x && this.y == state.y && this.direction == state.direction && this.pokemonsSoFar == state.pokemonsSoFar){
+			// di kanet a5er 7aga sha3'ala 
+			if(this.pokemonsSoFar == 0 && this.xHatch >= 0 && this.xHatch != state.xHatch) return false;
+			//if(this.pokemonsSoFar > 0 && this.xHatch != state.xHatch) return false;
+			return true;
+		}
+		return false; 
 	}
 	public int getX() {
 		return x;

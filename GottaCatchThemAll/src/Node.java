@@ -10,7 +10,7 @@ public class Node implements Comparable{
 	// create the root of the tree
 	// heuristic is set to zero at root which is wrong 
 	public Node MakeNode(State state) {
-		Node node = new Node(state,null,Operator.nill, 0,0,0,false);
+		Node node = new Node(state,null,Operator.nill,0,Integer.MAX_VALUE,0,false);
 		return node;
 	}
 	public Node() {	
@@ -26,7 +26,7 @@ public class Node implements Comparable{
 	
 	// node constructor: State, operator used to reach this node, depth of the node, path cost to reach the node 
 	public Node(State s, Node parent, Operator operator, int depth,int pathCost, int heuristicCost, boolean goal) {
-		this.state = new State(s.x, s.y, s.direction,s.pokemonsSoFar,s.xHatch,goal); 
+		this.state = new State(s.x, s.y, s.direction,s.pokemonsSoFar,s.xHatch,goal,s.pokLocation); 
 //		this.state = state;
 //		System.out.println("STATE: "+ this.state);
 

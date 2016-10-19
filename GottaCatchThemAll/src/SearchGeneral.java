@@ -12,14 +12,19 @@ public class SearchGeneral {
 		root = root.MakeNode(problem.initialState);
 		ArrayList<Node> nodes = new ArrayList<Node>();
 		nodes.add(root);
-//		System.out.println("INITIAL STATE: "+ root.state);
+		System.out.println("INITIAL STATE: "+ root);
 
 		while(true) {
 			if (nodes.size() == 0) return null; 
 			Node front = nodes.remove(0);
-			System.out.println("ANA BASEARCH: "+ front.depth);
 
+			System.out.println("ANA BASEARCH: "+ front.depth);
+			System.out.println("POK MAZE: "+ ((GottaCatchThemAll) problem).maze.pokemonLocations.size());
+			System.out.println("pok: "+ front.state.pokLocation.size());
 			if (problem.passGoalTest(front.state)) return front;
+//			if(front.depth == 5) {
+//				return null;
+//			}
 			ArrayList<Node> children = problem.expand(front);
 			nodes = GeneralQingFunc(qing_fun, nodes, children, problem);
 		}
@@ -31,43 +36,63 @@ public class SearchGeneral {
 		if(algorithm == QING_FUN.AStar2) return AStarQing(nodesSoFar, nodesExpanded, 2, problem);
 		if(algorithm == QING_FUN.AStar3) return AStarQing(nodesSoFar, nodesExpanded, 3, problem);
 
-		if(algorithm == QING_FUN.DFS) return DepthFirstSearchQing(nodesSoFar, nodesExpanded); ;
+		if(algorithm == QING_FUN.DFS) return DepthFirstSearchQing(nodesSoFar, nodesExpanded); 
+		if(algorithm == QING_FUN.BFS) return BreadthFirstSearchQing(nodesSoFar, nodesExpanded);
 		if(algorithm == QING_FUN.GR1) return GreedySearchQing(nodesSoFar, nodesExpanded, 1, problem);
 		if(algorithm == QING_FUN.GR2) return GreedySearchQing(nodesSoFar, nodesExpanded, 2, problem);
 		if(algorithm == QING_FUN.GR3) return GreedySearchQing(nodesSoFar, nodesExpanded, 3, problem);
 		if(algorithm == QING_FUN.ID) return DepthLimitedSearchQing(nodesSoFar, nodesExpanded);
-
+		
 		return null; 
 	}
 	public ArrayList<Node> GreedySearchQing(ArrayList<Node> nodes, ArrayList<Node> children, int heuristic, Problem problem) {
+//	System.out.println("CHILDREN SIZE: "+ children.size());
 		for(int i = 0; i<children.size(); i++) {
 			switch(heuristic) {
-				case 1:problem.setFirstHeuristic(children.get(i));break;
+				case 1:problem.setFirstHeuristic(children.get(i));
+//				System.out.println("heuristic: "+(children.get(i).heuristicCost));
+				break;
 				case 2:problem.setSecondHeuristic(children.get(i));break;
 				case 3:problem.setThirdHeuristic(children.get(i));break;
 			}
 		}
+//		System.out.println("SIZE: "+ nodes.size());
+
 		nodes.addAll(children);
-	 	System.out.println("SIZE: "+ nodes.size());
+//	 	System.out.println("Adding children SIZE: "+ nodes.size());
 
 		nodes.sort((o1, o2) -> o1.compareToGreedyHeuristic(o2));
-	 	System.out.println("SIZE: "+ nodes.size());
+//	 	System.out.println("SIZE: "+ nodes.size());
 
 		return nodes;
 	}
 	
 	public ArrayList<Node> DepthLimitedSearchQing(ArrayList<Node> nodes, ArrayList<Node> children) {
+		/*
+		if (children.size() == 0 && nodes.size() == 0) 
+		{
+			nodes.add(root); MAX_DEPTH ++; return nodes; 
+		}
+		if(children.size() == 0 ) return nodes;
 		if(children.get(0).depth > MAX_DEPTH) {
-			nodes.clear();
-			nodes.add(root);
-			MAX_DEPTH++;
+			return nodes;
 		} 
 		else {
 			for(int i = 0; i< nodes.size() ; i++) {
 				children.add(nodes.get(i));
 			}
 		}
-		return children;
+		return children;*/
+		ArrayList <Node> result = new ArrayList<Node>(); 
+		children.addAll(nodes);
+		for (int i = 0; i < children.size(); i++) {
+			if(children.get(i).depth <= MAX_DEPTH)
+				result.add(children.get(i));
+		}
+		if (result.size() == 0) {
+			result.add(root); MAX_DEPTH ++;
+		}
+		return result;
 	}
 	// Qing function for uniform cost search
 	public ArrayList<Node> UniformCostSearchQing(ArrayList<Node> nodes, ArrayList<Node> newNodes) {
@@ -85,7 +110,7 @@ public class SearchGeneral {
 			}
 		}
 		nodes.addAll(newNodes);
-		nodes.sort((o1, o2) -> o1.compareToGreedyHeuristic(o2));		
+		//nodes.sort((o1, o2) -> o1.compareToGreedyHeuristic(o2));		
 		nodes.sort((o1, o2) -> o1.compareToHeuristic(o2));
 		return nodes; 
 	}
@@ -126,7 +151,7 @@ public class SearchGeneral {
 	public ArrayList<Node> BreadthFirstSearchQing(ArrayList<Node> nodesSoFar, ArrayList<Node> children){
 		
 		for(int i = 0; i<children.size(); i++){
-		  nodesSoFar.add(nodesSoFar.get(i));
+		  nodesSoFar.add(children.get(i));
 			}					
 		return nodesSoFar;
 	}
