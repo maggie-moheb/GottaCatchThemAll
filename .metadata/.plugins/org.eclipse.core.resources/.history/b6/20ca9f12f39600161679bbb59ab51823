@@ -1,0 +1,9 @@
+
+public abstract class NodeAbs {
+	StateAbs state;
+	Node parent;
+	Operator operator;
+	int depth;
+	int pathCost;
+	int heuristicCost; 
+}

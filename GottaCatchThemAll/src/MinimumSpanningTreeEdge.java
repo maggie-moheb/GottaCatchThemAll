@@ -50,7 +50,7 @@ public class MinimumSpanningTreeEdge implements Comparable{
 	
 	public static ArrayList<MinimumSpanningTreeEdge> convertToEdges(ArrayList<Vertex> pokemonLocations) {
 		ArrayList<MinimumSpanningTreeEdge> pokemonEdges = new ArrayList<MinimumSpanningTreeEdge>();
-		System.out.println(pokemonLocations.size());
+		//System.out.println(pokemonLocations.size());
 		for(int i = 0; i<pokemonLocations.size(); i++) {
 			for(int j = i+1; j<pokemonLocations.size(); j++) {
 				MinimumSpanningTreeEdge edge = new MinimumSpanningTreeEdge(pokemonLocations.get(i), pokemonLocations.get(j));

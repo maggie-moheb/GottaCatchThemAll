@@ -1,0 +1,5 @@
+
+public abstract class StateAbs { 
+	public void setGoal(boolean goal);
+	public boolean isGoal();
+}

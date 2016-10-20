@@ -1,7 +1,7 @@
 import java.awt.Point;
 import java.util.ArrayList;
 
-public class State {
+public class State extends StateAbs {
 	int x;
 	int y;
 	Direction direction;
@@ -38,11 +38,12 @@ public class State {
 	public boolean equals(State state) {
 		//if(this.x == state.x && this.y == state.y && this.direction == state.direction && this.pokemonsSoFar == state.pokemonsSoFar && this.xHatch == state.xHatch)
 		//	return true;
-			
-		if(this.x == state.x && this.y == state.y && this.direction == state.direction && this.pokemonsSoFar == state.pokemonsSoFar){
+		// zawedt el xHatch	
+		if(this.x == state.x && this.y == state.y && this.direction == state.direction && this.pokemonsSoFar == state.pokemonsSoFar && this.xHatch == state.xHatch){
 			// di kanet a5er 7aga sha3'ala 
 			if(this.pokemonsSoFar == 0 && this.xHatch >= 0 && this.xHatch != state.xHatch) return false;
-			//if(this.pokemonsSoFar > 0 && this.xHatch < 0) return false;
+			// zawedt di 
+			if(this.pokemonsSoFar > 0 && this.xHatch < 0) return false;
 			return true;
 		}
 		return false; 

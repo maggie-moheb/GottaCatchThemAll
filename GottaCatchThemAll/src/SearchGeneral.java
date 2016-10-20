@@ -12,13 +12,12 @@ public class SearchGeneral {
 	public Node Search (Maze maze, QING_FUN qing_fun, boolean visualize) {
 		GottaCatchThemAll gottaCatchThemAll = new GottaCatchThemAll(maze);
 		Node node = General_Search(gottaCatchThemAll,qing_fun);
-		if (visualize) 
-			get_path(node,maze);
-		System.out.println("NODE: "+ node + " Expanded nodes = " + this.expandedNode);
-		System.out.println(node.state.x +", "+ node.state.y+ " GOAL?: "+ gottaCatchThemAll.passGoalTest(node.state));
+		get_path(node,maze,visualize);
+		System.out.println("Number of Expanded nodes = " + this.expandedNode);
+		System.out.println("Path Cost = " + (Integer.MAX_VALUE - node.pathCost));
 		return node; 
 	}
-	void get_path(Node node, Maze maze) {
+	void get_path(Node node, Maze maze,boolean visualize) {
 		Node currentNode = node;
 		while(currentNode != null) {
 			path.add(currentNode);
@@ -26,24 +25,27 @@ public class SearchGeneral {
 		}
 		for(int i = path.size()-1; i>=0; i--) {
 			maze.pokemonLocations = new ArrayList<Point>();
-			for(int j = 0; j < path.get(i).state.pokLocation.size(); j++) {
-				maze.pokemonLocations.add(path.get(i).state.pokLocation.get(j));
+			System.out.println(path.get(i).toString());
+			for(int j = 0; j < ((State)path.get(i).state).pokLocation.size(); j++) {
+				maze.pokemonLocations.add(((State)path.get(i).state).pokLocation.get(j));
 			}
-			maze.intialSate.x = path.get(i).state.x; 
-			maze.intialSate.y = path.get(i).state.y;
+			maze.intialSate.x = ((State)path.get(i).state).x; 
+			maze.intialSate.y = ((State)path.get(i).state).y;
+			if(visualize) {
 			Maze.Print_Maze(maze);
 			System.out.println("+++++++++++++++++++++++++++++++++++++++++");
+			}
 		}
 	}
 	void print_path(Node node, Maze maze) {
 		if(node == null)  return; 
 		print_path(node.parent,maze); 
 		maze.pokemonLocations = new ArrayList<Point>();
-		for(int i = 0; i < node.state.pokLocation.size(); i++) {
-			maze.pokemonLocations.add(node.state.pokLocation.get(i));
+		for(int i = 0; i < ((State)node.state).pokLocation.size(); i++) {
+			maze.pokemonLocations.add(((State)node.state).pokLocation.get(i));
 		}
-		maze.intialSate.x = node.state.x; 
-		maze.intialSate.y = node.state.y;
+		maze.intialSate.x = ((State)node.state).x; 
+		maze.intialSate.y = ((State)node.state).y;
 		Maze.PrintMaze(maze);
 		System.out.println("+++++++++++++++++++++++++++++++++++++++++");
 	}

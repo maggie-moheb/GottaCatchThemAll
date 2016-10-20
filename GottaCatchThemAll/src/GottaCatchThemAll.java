@@ -40,27 +40,29 @@ public class GottaCatchThemAll extends Problem{
 		return foundOnPath(node, parent.parent);
 	}
 	@Override
-	public boolean passGoalTest(State currentState) {
+	public boolean passGoalTest(StateAbs currentState) {
+		State currentState2 = (State) currentState;
 //		System.out.println(currentState);
-		if(maze.mazeGrid[currentState.x][currentState.y].isGoal && currentState.pokemonsSoFar <= 0 && currentState.xHatch <= 0 )
+		if(maze.mazeGrid[currentState2.x][currentState2.y].isGoal && currentState2.pokemonsSoFar <= 0 && currentState2.xHatch <= 0 )
 			return true;
 		return false;
 	}
+	/*
 	public void setVisitedState(Node node) {
 		 if (node == null) return;
 		 if (cleaned == 1) 
 			visitedStates[node.state.x][node.state.y][getDirectionInt(node.state.direction)] = node.state.pokemonsSoFar;
 		 else visitedStates[node.state.x][node.state.y][getDirectionInt(node.state.direction)] = node.state.xHatch;
 		 setVisitedState(node.parent);
-	}
+	}*/
 	@Override
 	public int pathCostFunction(Node node) {
-		int pokemon =  node.parent.state.pokLocation.size() - node.state.pokLocation.size();
+		int pokemon =  ((State)node.parent.state).pokLocation.size() - ((State)node.state).pokLocation.size();
 		int goal = 0 ;
 		if(passGoalTest(node.state)) {
 			goal = 1;
 		}
-		int xHatch =  Math.abs(node.state.xHatch - node.parent.state.xHatch);
+		int xHatch =  Math.abs(((State)node.state).xHatch - ((State)node.parent.state).xHatch);
 		//xHatch is always adding as it the new one is always less than the old one
 		//if(xHatch <0) xHatch = 0;
 		node.pathCost = node.parent.pathCost - (20*pokemon + 500* goal + 10*xHatch);
@@ -72,13 +74,14 @@ public class GottaCatchThemAll extends Problem{
 		// TODO Auto-generated method stub
 		return node.pathCost;
 	}
+	/*
 	public void emptyDown() {
 		for(int i = 0; i < nodesSoFar.size(); i++) {
 			if(nodesSoFar.get(i).depth > depthSoFar) { 
 				visitedStates[nodesSoFar.get(i).state.x][nodesSoFar.get(i).state.y][getDirectionInt(nodesSoFar.get(i).state.direction)] = -1;
 		}
 		}
-	}
+	}*/
 	public boolean stateExist(State state) {
 		for (int i = 0; i < statesSoFar.size(); i++) {
 			if(state.equals(statesSoFar.get(i)))
@@ -100,8 +103,8 @@ public class GottaCatchThemAll extends Problem{
 		//if(node.depth < depthSoFar) statesSoFar = new ArrayList<State>();
 		//if (node.state.xHatch < 0 && node.state.pokemonsSoFar == 0) 
 		//	statesSoFar = new ArrayList<State>();
-		if(node.state.pokLocation.size() == 0 && node.state.xHatch <= 0) limiting ++; 
-		if(stateExist(node.state)) {
+		//if(node.state.pokLocation.size() == 0 && node.state.xHatch <= 0) limiting ++; 
+		if(stateExist((State)node.state)) {
 			//if(node.state.pokLocation.size() == 0 && node.state.xHatch <= 0 && limiting > 100) {
 			//	limiting = 0;
 			//	return new ArrayList<Node>(); 
@@ -110,36 +113,36 @@ public class GottaCatchThemAll extends Problem{
 			//System.out.println("la2etha abl keda");
 			return new ArrayList<Node>(); 
 		}
-		else statesSoFar.add(node.state);
-		if (cleaned == 1)
-			visitedStates[node.state.x][node.state.y][getDirectionInt(node.state.direction)] = node.state.pokemonsSoFar;
-		else visitedStates[node.state.x][node.state.y][getDirectionInt(node.state.direction)] = node.state.xHatch;
-		if (node.depth < depthSoFar) {
-			if(node.state.pokemonsSoFar > 0) cleaned = 1; 
-			else cleaned = 2; 
-			emptyDown();
-		}
-		nodesSoFar.add(node); 
-		depthSoFar = node.depth;
+		else statesSoFar.add((State)node.state);
+		//if (cleaned == 1)
+		//	visitedStates[node.state.x][node.state.y][getDirectionInt(node.state.direction)] = node.state.pokemonsSoFar;
+		//else visitedStates[node.state.x][node.state.y][getDirectionInt(node.state.direction)] = node.state.xHatch;
+		//if (node.depth < depthSoFar) {
+		//	if(node.state.pokemonsSoFar > 0) cleaned = 1; 
+		//	else cleaned = 2; 
+		//	emptyDown();
+		//}
+		//nodesSoFar.add(node); 
+		//depthSoFar = node.depth;
 		ArrayList<Node> possibleMovements = new ArrayList<Node>();
-		int xnode = node.state.x; 
-		int ynode = node.state.y;
+		int xnode = ((State)node.state).x; 
+		int ynode = ((State)node.state).y;
 		int xTranslate = xnode;
 		int yTranslate = ynode; 
-		if (cleaned == 1) {
+//		if (cleaned == 1) {
 //			System.out.println("XNODE: "+xnode + ", "+ynode +" "+ getDirectionInt(node.state.direction));
-			visitedStates[xnode][ynode][getDirectionInt(node.state.direction)] = node.state.pokemonsSoFar; 
-		}
-		if (cleaned == 2)
-			visitedStates[xnode][ynode][getDirectionInt(node.state.direction)] = node.state.xHatch; 
-		if(node.state.pokemonsSoFar <= 0 && cleaned == 1) {
-			System.out.println("lamet kol el pokemon");
-			emptyVisitedStates();
-		}
+//			visitedStates[xnode][ynode][getDirectionInt(node.state.direction)] = node.state.pokemonsSoFar; 
+//		}
+//		if (cleaned == 2)
+//			visitedStates[xnode][ynode][getDirectionInt(node.state.direction)] = node.state.xHatch; 
+//		if(node.state.pokemonsSoFar <= 0 && cleaned == 1) {
+			//System.out.println("lamet kol el pokemon");
+//			emptyVisitedStates();
+//		}
 		// translation possible movements 
-		if (node.state.direction == Direction.NORTH && ((ynode + 1) < maze.Length) && (!maze.mazeGrid[xnode][ynode].wallUp)) {
+		if (((State)node.state).direction == Direction.NORTH && ((ynode + 1) < maze.Length) && (!maze.mazeGrid[xnode][ynode].wallUp)) {
 			yTranslate = yTranslate + 1;
-			int pokemonNode = node.state.pokemonsSoFar;
+			int pokemonNode = ((State)node.state).pokemonsSoFar;
 //			System.out.println(maze.mazeGrid[xTranslate][yTranslate].ContainsPock);
 			/*
 			if (maze.mazeGrid[xTranslate][yTranslate].ContainsPock) { 
@@ -152,16 +155,16 @@ public class GottaCatchThemAll extends Problem{
 				node.state.pokLocation.remove(new Point(xTranslate, yTranslate));
 			}*/
 			State translate = new State(xTranslate,yTranslate,Direction.NORTH,
-					pokemonNode,node.state.xHatch -1, false,node.state.pokLocation);
+					pokemonNode,((State)node.state).xHatch -1, false,((State)node.state).pokLocation);
 			boolean isgoal = passGoalTest(translate) ; 
 			translate.isgoal = isgoal; 
 			Node newNode = new Node(translate,node,Operator.TRANSLATE,node.depth + 1,0, 0, isgoal);
 			pathCostFunction(newNode);
 			possibleMovements.add(newNode);
 		}
-		if (node.state.direction == Direction.SOUTH && ynode > 0 && (!maze.mazeGrid[xnode][ynode].wallDown)) {
+		if (((State)node.state).direction == Direction.SOUTH && ynode > 0 && (!maze.mazeGrid[xnode][ynode].wallDown)) {
 			yTranslate = yTranslate - 1;
-			int pokemonNode = node.state.pokemonsSoFar;
+			int pokemonNode = ((State)node.state).pokemonsSoFar;
 //			System.out.println(maze.mazeGrid[xTranslate][yTranslate].ContainsPock);
 			/*
 			if (maze.mazeGrid[xTranslate][yTranslate].ContainsPock) {
@@ -169,7 +172,7 @@ public class GottaCatchThemAll extends Problem{
 				maze.mazeGrid[xTranslate][yTranslate].ContainsPock = false;
 			}*/
 			State translate = new State(xTranslate,yTranslate,Direction.SOUTH,
-					pokemonNode,node.state.xHatch -1, false,node.state.pokLocation);
+					pokemonNode,((State)node.state).xHatch -1, false,((State)node.state).pokLocation);
 			boolean isgoal = passGoalTest(translate); 
 			translate.isgoal = isgoal; 
 			Node newNode = new Node(translate,node,Operator.TRANSLATE,node.depth + 1,0, 0, isgoal);
@@ -177,9 +180,9 @@ public class GottaCatchThemAll extends Problem{
 			newNode.pathCost = cost;
 			possibleMovements.add(newNode);
 		}
-		if (node.state.direction == Direction.EAST && ((xnode + 1) < maze.Width) && (!maze.mazeGrid[xnode][ynode].wallRight)) {
+		if (((State)node.state).direction == Direction.EAST && ((xnode + 1) < maze.Width) && (!maze.mazeGrid[xnode][ynode].wallRight)) {
 			xTranslate = xTranslate + 1;
-			int pokemonNode = node.state.pokemonsSoFar;
+			int pokemonNode = ((State)node.state).pokemonsSoFar;
 //			System.out.println(maze.mazeGrid[xTranslate][yTranslate].ContainsPock);
 			/*
 			if (maze.mazeGrid[xTranslate][yTranslate].ContainsPock) {
@@ -188,7 +191,7 @@ public class GottaCatchThemAll extends Problem{
 
 			}*/
 			State translate = new State(xTranslate,yTranslate,Direction.EAST,
-					pokemonNode,node.state.xHatch -1, false,node.state.pokLocation);
+					pokemonNode,((State)node.state).xHatch -1, false,((State)node.state).pokLocation);
 			boolean isgoal = passGoalTest(translate); 
 			translate.isgoal = isgoal; 
 			Node newNode = new Node(translate,node,Operator.TRANSLATE,node.depth + 1,0, 0, isgoal);
@@ -198,9 +201,9 @@ public class GottaCatchThemAll extends Problem{
 			possibleMovements.add(newNode);
 			
 		}
-		if (node.state.direction == Direction.WEST && ((xnode - 1) >= 0) && (!maze.mazeGrid[xnode][ynode].wallLeft)) {
+		if (((State)node.state).direction == Direction.WEST && ((xnode - 1) >= 0) && (!maze.mazeGrid[xnode][ynode].wallLeft)) {
 			xTranslate = xTranslate - 1;
-			int pokemonNode = node.state.pokemonsSoFar;
+			int pokemonNode = ((State)node.state).pokemonsSoFar;
 //			System.out.println(maze.mazeGrid[xTranslate][yTranslate].ContainsPock);
 			/*
 			if (maze.mazeGrid[xTranslate][yTranslate].ContainsPock) {
@@ -209,7 +212,7 @@ public class GottaCatchThemAll extends Problem{
 
 			}*/
 			State translate = new State(xTranslate,yTranslate,Direction.EAST,
-					pokemonNode,node.state.xHatch -1, false,node.state.pokLocation);
+					pokemonNode,((State)node.state).xHatch -1, false,((State)node.state).pokLocation);
 			boolean isgoal = passGoalTest(translate); 
 			translate.isgoal = isgoal; 
 			Node newNode = new Node(translate,node,Operator.TRANSLATE,node.depth + 1,0, 0, isgoal);
@@ -221,40 +224,40 @@ public class GottaCatchThemAll extends Problem{
 		// rotation possible movements 
 		State rotateLeft,rotateRight; 
 		Node newNodeRight, newNodeLeft; 
-		if (node.state.direction == Direction.NORTH) {
+		if (((State)node.state).direction == Direction.NORTH) {
 			 rotateLeft = new State(xTranslate,yTranslate,Direction.WEST,
-					node.state.pokemonsSoFar,node.state.xHatch, false,node.state.pokLocation);
+					((State)node.state).pokemonsSoFar,((State)node.state).xHatch, false,((State)node.state).pokLocation);
 			 newNodeLeft = new Node(rotateLeft,node,Operator.ROTATELEFT,node.depth + 1,0, 0, false);
 			
 			 rotateRight = new State(xTranslate,yTranslate,Direction.EAST,
-					node.state.pokemonsSoFar,node.state.xHatch, false,node.state.pokLocation);
+					((State)node.state).pokemonsSoFar,((State)node.state).xHatch, false,((State)node.state).pokLocation);
 			 newNodeRight = new Node(rotateRight,node,Operator.ROTATERIGHT,node.depth + 1,0, 0, false);
 		}
-		else if (node.state.direction == Direction.EAST) {
+		else if (((State)node.state).direction == Direction.EAST) {
 			 rotateLeft = new State(xTranslate,yTranslate,Direction.NORTH,
-						node.state.pokemonsSoFar,node.state.xHatch, false,node.state.pokLocation);
+						((State)node.state).pokemonsSoFar,((State)node.state).xHatch, false,((State)node.state).pokLocation);
 			 newNodeLeft = new Node(rotateLeft,node,Operator.ROTATELEFT,node.depth + 1,0, 0, false);
 				
 			 rotateRight = new State(xTranslate,yTranslate,Direction.SOUTH,
-						node.state.pokemonsSoFar,node.state.xHatch, false,node.state.pokLocation);
+						((State)node.state).pokemonsSoFar,((State)node.state).xHatch, false,((State)node.state).pokLocation);
 			 newNodeRight = new Node(rotateRight,node,Operator.ROTATERIGHT,node.depth + 1,0, 0, false);
 		}
-		else if (node.state.direction == Direction.SOUTH) {
+		else if (((State)node.state).direction == Direction.SOUTH) {
 			 rotateLeft = new State(xTranslate,yTranslate,Direction.EAST,
-						node.state.pokemonsSoFar,node.state.xHatch, false,node.state.pokLocation);
+						((State)node.state).pokemonsSoFar,((State)node.state).xHatch, false,((State)node.state).pokLocation);
 			 newNodeLeft = new Node(rotateLeft,node,Operator.ROTATELEFT,node.depth + 1,0, 0, false);
 				
 			 rotateRight = new State(xTranslate,yTranslate,Direction.WEST,
-						node.state.pokemonsSoFar,node.state.xHatch, false,node.state.pokLocation);
+						((State)node.state).pokemonsSoFar,((State)node.state).xHatch, false,((State)node.state).pokLocation);
 			 newNodeRight = new Node(rotateRight,node,Operator.ROTATERIGHT,node.depth + 1,0, 0, false);
 		}
 		else {
 			 rotateLeft = new State(xTranslate,yTranslate,Direction.SOUTH,
-						node.state.pokemonsSoFar,node.state.xHatch, false,node.state.pokLocation);
+						((State)node.state).pokemonsSoFar,((State)node.state).xHatch, false,((State)node.state).pokLocation);
 			 newNodeLeft = new Node(rotateLeft,node,Operator.ROTATELEFT,node.depth + 1,0, 0, false);
 				
 			 rotateRight = new State(xTranslate,yTranslate,Direction.NORTH,
-						node.state.pokemonsSoFar,node.state.xHatch, false,node.state.pokLocation);
+						((State)node.state).pokemonsSoFar,((State)node.state).xHatch, false,((State)node.state).pokLocation);
 			 newNodeRight = new Node(rotateRight,node,Operator.ROTATERIGHT,node.depth + 1,0, 0, false);
 		}
 		int costLeft = pathCostFunction(newNodeLeft); 
@@ -272,13 +275,13 @@ public class GottaCatchThemAll extends Problem{
 			//if(cleaned == 1 && visitedStates[temp.x][temp.y][getDirectionInt(temp.direction)] != temp.pokemonsSoFar) 
 			//	result.add(possibleMovements.get(i));
 			//if(cleaned == 2 && visitedStates[temp.x][temp.y][getDirectionInt(temp.direction)] == -1) 
-				
+			if(((State)possibleMovements.get(i).state).xHatch < 0) ((State)possibleMovements.get(i).state).xHatch = 0;	
 			result.add(possibleMovements.get(i));
 		 }
-		if( cleaned == 2 && result.size()>0) {
+//		if( cleaned == 2 && result.size()>0) {
 //			System.out.println("VISITED: "+visitedStates[result.get(0).state.x][result.get(0).state.y][getDirectionInt(result.get(0).state.direction)]);
 //		System.out.println("POKEMON: "+result.get(0).state.pokemonsSoFar);
-		}
+//		}
 		return result;
 	}
 	public int getDirectionInt(Direction d) {
@@ -292,12 +295,12 @@ public class GottaCatchThemAll extends Problem{
 	@Override
 	// city block distance 
 	public void setFirstHeuristic(Node node) {
- 		node.heuristicCost = (Math.abs(node.state.x - maze.xGoal) + Math.abs(node.state.y - maze.yGoal)); 		
+ 		node.heuristicCost = (Math.abs(((State)node.state).x - maze.xGoal) + Math.abs(((State)node.state).y - maze.yGoal)); 		
 	}
 
 	@Override
 	public void setSecondHeuristic(Node node) {
-		node.heuristicCost = Math.max(node.state.pokemonsSoFar, node.state.xHatch);
+		node.heuristicCost = Math.max(((State)node.state).pokemonsSoFar, ((State)node.state).xHatch);
 	}
 
 	@Override
@@ -305,10 +308,10 @@ public class GottaCatchThemAll extends Problem{
 		// TODO Auto-generated method stub
 	
 		ArrayList<Point> pokemonLocations =new ArrayList<Point>();
-		for (int i = 0; i < node.state.pokLocation.size(); i ++) {
-			pokemonLocations.add(node.state.pokLocation.get(i));
+		for (int i = 0; i < ((State)node.state).pokLocation.size(); i ++) {
+			pokemonLocations.add(((State)node.state).pokLocation.get(i));
 		}
-		pokemonLocations.add(new Point(node.state.x, node.state.y));
+		pokemonLocations.add(new Point(((State)node.state).x, ((State)node.state).y));
 		ArrayList<Vertex> vertices = Vertex.convertToVertex(pokemonLocations);
 		ArrayList<MinimumSpanningTreeEdge> edges = MinimumSpanningTreeEdge.convertToEdges(vertices);
 		edges.sort((o1, o2) -> o1.compareTo(o2));
@@ -351,9 +354,36 @@ public class GottaCatchThemAll extends Problem{
 //		System.out.println(maze.pokemonLocations.size());
 
 		SearchGeneral search = new SearchGeneral();
-		search.Search(maze, QING_FUN.AStar2, true);
+		System.out.println("ID");
+		search.Search(maze, QING_FUN.BFS, false);
+		
+		/*
+		System.out.println("Astar3");
+		search.Search(maze, QING_FUN.AStar3, false);
+		
+		System.out.println("Astar2");
+		search.Search(maze, QING_FUN.AStar2, false);
+		
+		System.out.println("Astar1");
+		search.Search(maze, QING_FUN.AStar1, false);
+		
+		System.out.println("Greedy 3");
+		search.Search(maze, QING_FUN.GR3, false);
+		
+		System.out.println("Greedy 2");
+		search.Search(maze, QING_FUN.GR2, false);
+		System.out.println("Greedy 1");
+		search.Search(maze, QING_FUN.GR1, false);
+		System.out.println("UCS");
+		search.Search(maze, QING_FUN.UCS, false);
+		
+		System.out.println("DFS");
+		//search.Search(maze, QING_FUN.DFS, false);
+		//System.out.println("BFS");
+		//search.Search(maze, QING_FUN.BFS, false);
+		*/
 		//Node node = search.General_Search(gottaCatchThemAll, QING_FUN.AStar2);
 		//System.out.println("NODE: "+ node + " Expanded nodes = " + search.expandedNode);
-		//System.out.println(node.state.x +", "+ node.state.y+ " GOAL?: "+ gottaCatchThemAll.passGoalTest(node.state));
+		//System.out.println(((State)node.state).x +", "+ node.state.y+ " GOAL?: "+ gottaCatchThemAll.passGoalTest(node.state));
 	}
 }

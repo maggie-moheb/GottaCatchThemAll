@@ -1,6 +1,6 @@
 
-public class Node implements Comparable{
-	State state;
+public class Node  implements Comparable{
+	StateAbs state;
 	Node parent;
 	Operator operator;
 	int depth;
@@ -9,8 +9,8 @@ public class Node implements Comparable{
 	
 	// create the root of the tree
 	// heuristic is set to zero at root which is wrong 
-	public Node MakeNode(State state) {
-		Node node = new Node(state,null,Operator.nill,0,Integer.MAX_VALUE,0,false);
+	public Node MakeNode(StateAbs state) {
+		Node node = new Node((State)state,null,Operator.nill,0,Integer.MAX_VALUE,0,false);
 		return node;
 	}
 	public Node() {	
@@ -36,7 +36,7 @@ public class Node implements Comparable{
 		this.pathCost = pathCost; 
 		this.heuristicCost = heuristicCost; 
 	}
-	public State getState() {
+	public StateAbs getState() {
 		return state;
 	}
 	public void setState(State state) {
@@ -87,5 +87,8 @@ public class Node implements Comparable{
 		if(cost > nodeCost) return 1; 
 		if(cost < nodeCost) return -1; 
 		return 0; 
+	}
+	public String toString() {
+		return "X node = " + ((State)this.state).x + " ,Y node = " + ((State)this.state).y + " ,Direction = " + ((State)this.state).direction;
 	}
 }

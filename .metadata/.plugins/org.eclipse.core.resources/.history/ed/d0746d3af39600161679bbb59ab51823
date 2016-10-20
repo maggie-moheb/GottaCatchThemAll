@@ -1,0 +1,13 @@
+
+public abstract class NodeAbs {
+	StateAbs state;
+	NodeAbs parent;
+	Operator operator;
+	int depth;
+	int pathCost;
+	int heuristicCost; 
+	
+	// create the root of the tree
+	// heuristic is set to zero at root which is wrong 
+	public NodeAbs MakeNode(StateAbs state);
+}
