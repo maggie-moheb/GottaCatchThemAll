@@ -1,4 +1,8 @@
-//different search algorithms to be implemented 
+/**
+ * different search algorithms to be implemented 
+ * @author maggiemoheb, myriameayman, youmnasalah
+ *
+ */
 public enum QING_FUN {
 	UCS,
 	AStar1,

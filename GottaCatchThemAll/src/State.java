@@ -1,6 +1,10 @@
 import java.awt.Point;
 import java.util.ArrayList;
-
+/**
+ * State implementation
+ * @author maggiemoheb, myriameayman, youmnasalah
+ *
+ */
 public class State extends StateAbs {
 	int x;
 	int y;
@@ -9,16 +13,19 @@ public class State extends StateAbs {
 	int xHatch;
 	boolean isgoal;
 	ArrayList <Point> pokLocation; 
-	public boolean isGoal() {
-		return isgoal;
-	}
-	public void setGoal(boolean goal) {
-		this.isgoal = goal;
-	}
-	// state constructor contains the x and y position on grid
-	// direction of the agent 
-	// pokemon that the agent has not collected so far 
-	// xHatch is the steps remaining for the egg to hatch 
+	/**
+	 * state constructor contains the x and y position on grid
+	 * direction of the agent 
+	 * pokemon that the agent has not collected so far 
+	 * xHatch is the steps remaining for the egg to hatch 
+	 * @param x x location
+	 * @param y y location
+	 * @param d direction
+	 * @param p pokemons
+	 * @param xH hatch steps
+	 * @param goal if the state is goal
+	 * @param pok list of locations of pokemons left from this state
+	 */
 	public State(int x, int y, Direction d, int p, int xH,boolean goal,ArrayList<Point> pok) {
 		this.x = x; 
 		this.y = y; 
@@ -35,18 +42,14 @@ public class State extends StateAbs {
 			this.pokemonsSoFar = this.pokLocation.size();
 		}
 	}
-	public boolean equals(State state) {
-		//if(this.x == state.x && this.y == state.y && this.direction == state.direction && this.pokemonsSoFar == state.pokemonsSoFar && this.xHatch == state.xHatch)
-		//	return true;
-		// zawedt el xHatch	
-		if(this.x == state.x && this.y == state.y && this.direction == state.direction && this.pokemonsSoFar == state.pokemonsSoFar && this.xHatch == state.xHatch){
-			// di kanet a5er 7aga sha3'ala 
-			if(this.pokemonsSoFar == 0 && this.xHatch >= 0 && this.xHatch != state.xHatch) return false;
-			// zawedt di 
-			if(this.pokemonsSoFar > 0 && this.xHatch < 0) return false;
-			return true;
-		}
-		return false; 
+	/**
+	 * getters and setters
+	 */
+	public boolean isGoal() {
+		return isgoal;
+	}
+	public void setGoal(boolean goal) {
+		this.isgoal = goal;
 	}
 	public int getX() {
 		return x;
@@ -78,5 +81,18 @@ public class State extends StateAbs {
 	public void setxHatch(int xHatch) {
 		this.xHatch = xHatch;
 	}
-
+	/**
+	 * compares if 2 states are equal
+	 * @param state
+	 * @return
+	 */
+	public boolean equals(State state) {
+		if(this.x == state.x && this.y == state.y && this.direction == state.direction && this.pokemonsSoFar == state.pokemonsSoFar && this.xHatch == state.xHatch){
+			if(this.pokemonsSoFar == 0 && this.xHatch >= 0 && this.xHatch != state.xHatch) return false;
+			if(this.pokemonsSoFar > 0 && this.xHatch < 0) return false;
+			return true;
+		}
+		return false; 
+	}
+	
 }

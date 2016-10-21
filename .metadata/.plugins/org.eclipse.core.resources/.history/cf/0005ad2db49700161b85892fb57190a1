@@ -1,0 +1,11 @@
+/**
+ * orientation of agent enumerator
+ * @author maggiemoheb
+ *
+ */
+public enum Direction {
+	NORTH,
+	SOUTH,
+	EAST,
+	WEST
+}

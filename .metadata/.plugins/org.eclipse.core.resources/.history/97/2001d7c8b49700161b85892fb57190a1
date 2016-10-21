@@ -1,0 +1,17 @@
+/**
+ * different search algorithms to be implemented 
+ * @author maggiemoheb
+ *
+ */
+public enum QING_FUN {
+	UCS,
+	AStar1,
+	AStar2,
+	AStar3,
+	GR1,
+	GR2,
+	GR3,
+	BFS,
+	DFS,
+	ID,
+}
