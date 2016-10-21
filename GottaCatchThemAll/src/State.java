@@ -38,7 +38,6 @@ public class State extends StateAbs {
 			this.pokLocation.add(pok.get(i));
 		if (pok.contains(new Point(this.x,this.y))) {
 			this.pokLocation.remove(new Point(this.x,this.y));
-			//this.pokemonsSoFar = this.pokemonsSoFar - 1; 
 			this.pokemonsSoFar = this.pokLocation.size();
 		}
 	}
