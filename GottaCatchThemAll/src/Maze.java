@@ -15,6 +15,7 @@ public class Maze{
 	public ArrayList<Point> pokemonLocations;
 	int xGoal; 
 	int yGoal; 
+	int [][] cellNumber; 
 	/**
 	 * Create an instance of Maze with random dimensions  
 	 */
@@ -32,11 +33,15 @@ public class Maze{
 		mazeGrid = intiGrid(new MazeCell[Width][Length]); 		
 	}
 	public MazeCell[][] intiGrid(MazeCell[][] grid){
-		for (int i = 0; i< Length; i++){
-			for (int j = 0; j< Width;j++){
-				grid[j][i] = new MazeCell();
-				grid[j][i].x = j;
-				grid[j][i].y = i;
+		cellNumber = new int [Width][Length];
+		int count = 0;
+		for (int i = 0; i< Width; i++){
+			for (int j = 0; j< Length;j++){
+				grid[i][j] = new MazeCell();
+				grid[i][j].x = i;
+				grid[i][j].y = j;
+				cellNumber[i][j] = count;
+				count ++;
 			}
 		}
 		return grid;
@@ -318,6 +323,65 @@ public class Maze{
 			System.out.println(wallsDown);
 		}
 	}
+	public static String generate_predicates(String name, ArrayList<String> inputs) {
+		String result = name + "( "; 
+		for(int i =0; i < inputs.size() - 1; i++) {
+			result = result + inputs.get(i) + " , "; 
+		}
+		result = result + inputs.get(inputs.size()-1) + " )";
+		return result;
+	}
+	public static void GenMazeTextFile(Maze maze) {
+		MazeCell[][] Grid = maze.mazeGrid;
+		
+		String dimension = generate_predicates("dimension",new ArrayList<String>() {{
+			add(maze.Width + "");
+		    add(maze.Length+ "");}});
+		String goal = generate_predicates("dimension",new ArrayList<String>() {{
+			add(maze.Width + "");
+		    add(maze.Length+ "");}});
+
+		String wallsUp, wallsDown, current;	
+		for(int j =  maze.Length -1; j >=0; j--){
+			wallsUp = ""; wallsDown = "";current = "";
+			for(int i = 0; i < maze.Width; i++){
+				if (!Grid[i][j].vistied) 
+					System.out.println("rrrr");
+				if(Grid[i][j].wallUp)
+					wallsUp += "  --  ";
+				else
+					wallsUp += "      ";
+				if(Grid[i][j].wallLeft)
+					current += " |";
+				else
+					current += "  ";
+				if(maze.pokemonLocations.contains(new Point(i, j))&& Grid[i][j].isGoal)
+					current += "po";
+				else 
+					if(i == maze.intialSate.x && j == maze.intialSate.y)
+						current += " A";
+				else 
+					if(Grid[i][j].isGoal)
+					current += " O";
+				else 
+					if(maze.pokemonLocations.contains(new Point(i, j)))
+					current += " p";
+				else 
+					current+= " *";
+				if(Grid[i][j].wallRight)
+					current +="| ";
+				else
+					current +="  ";
+				if(Grid[i][j].wallDown)
+					wallsDown += "  --  ";
+				else
+					wallsDown += "      ";
+			}
+			System.out.println(wallsUp);
+			System.out.println(current);
+			System.out.println(wallsDown);
+		}
+	}
 	public static void main(String[] args){
 		Maze maze = new Maze();
 		maze = maze.GeneMaze();
@@ -326,7 +390,17 @@ public class Maze{
 			System.out.println(maze.pokemonLocations.get(i).toString() );
 			System.out.println(maze.mazeGrid[maze.pokemonLocations.get(i).x][maze.pokemonLocations.get(i).y].ContainsPock);
 		}
-		PrintMaze(maze);
+		//PrintMaze(maze);
+		ArrayList<String> inputs = new ArrayList<String>();		
+		String dimension = generate_predicates("dimension",new ArrayList<String>() {{
+			add(6 + "");
+		    add(6+ "");}});
+		for(int i =0; i < maze.cellNumber.length; i++) {
+			for(int j =0; j < maze.cellNumber[1].length; j++){ 
+				System.out.println(maze.cellNumber[i][j]);
+			}
+			System.out.println("\n");
+			}
 	}
 
 }
