@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="gen" key="selection"/>
+		<item value="xh" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="xH"/>
+			<item value="generate_"/>
+			<item value="isgoal"/>
 			<item value="gen"/>
 			<item value="search"/>
 			<item value="lamet"/>
 			<item value="sys"/>
 			<item value="printM"/>
-			<item value="print"/>
-			<item value="pri"/>
-			<item value="POK MAZE: 5"/>
 		</list>
 		<list key="replacehistory">
 		</list>

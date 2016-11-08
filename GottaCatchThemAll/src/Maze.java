@@ -2,11 +2,13 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
+import java.io.PrintWriter;
 /**
  * Maze class
  * @author maggiemoheb, myriameayman, youmnasalah
  *
  */
+
 public class Maze{
 	int Length, Width, totalPoky;
 	Point intialSate;
@@ -85,7 +87,7 @@ public class Maze{
 		int yStart = R.nextInt(maze.Length-1); 
 		System.out.println("Start x,y :"+xStart+" "+yStart);
 		maze.intialSate = (new Point(xStart,yStart));
-		maze.xhatch = (R.nextInt((maze.Width)*(maze.Length))); // setting x-hatch randomly at max equal to the number of cells in the maze
+		maze.xhatch = (R.nextInt((maze.Width)*(maze.Length))) + 1; // setting x-hatch randomly at max equal to the number of cells in the maze
 		Stack <MazeCell>nodes = new Stack<MazeCell>();
 		nodes.push(maze.mazeGrid[xStart][yStart] ); // add start node to the nodes Stack
 		//DFS
@@ -328,59 +330,67 @@ public class Maze{
 		for(int i =0; i < inputs.size() - 1; i++) {
 			result = result + inputs.get(i) + " , "; 
 		}
-		result = result + inputs.get(inputs.size()-1) + " )";
+		result = result + inputs.get(inputs.size()-1) + " ).";
 		return result;
 	}
 	public static void GenMazeTextFile(Maze maze) {
 		MazeCell[][] Grid = maze.mazeGrid;
-		
 		String dimension = generate_predicates("dimension",new ArrayList<String>() {{
 			add(maze.Width + "");
-		    add(maze.Length+ "");}});
-		String goal = generate_predicates("dimension",new ArrayList<String>() {{
-			add(maze.Width + "");
-		    add(maze.Length+ "");}});
-
-		String wallsUp, wallsDown, current;	
-		for(int j =  maze.Length -1; j >=0; j--){
-			wallsUp = ""; wallsDown = "";current = "";
-			for(int i = 0; i < maze.Width; i++){
-				if (!Grid[i][j].vistied) 
-					System.out.println("rrrr");
-				if(Grid[i][j].wallUp)
-					wallsUp += "  --  ";
-				else
-					wallsUp += "      ";
-				if(Grid[i][j].wallLeft)
-					current += " |";
-				else
-					current += "  ";
-				if(maze.pokemonLocations.contains(new Point(i, j))&& Grid[i][j].isGoal)
-					current += "po";
-				else 
-					if(i == maze.intialSate.x && j == maze.intialSate.y)
-						current += " A";
-				else 
-					if(Grid[i][j].isGoal)
-					current += " O";
-				else 
-					if(maze.pokemonLocations.contains(new Point(i, j)))
-					current += " p";
-				else 
-					current+= " *";
-				if(Grid[i][j].wallRight)
-					current +="| ";
-				else
-					current +="  ";
-				if(Grid[i][j].wallDown)
-					wallsDown += "  --  ";
-				else
-					wallsDown += "      ";
+		    add(maze.Length+ "");}}) + "\n";
+		String goal = "";
+		String cells =  ""; 
+		String walls = "";
+		String pok = "";
+		String xhatch = generate_predicates("xHatch", new ArrayList<String>() {{
+			add(maze.xhatch + "");}}) + "\n";
+		ArrayList<String> agentCell = new ArrayList<String>();
+		agentCell.add(maze.cellNumber[maze.intialSate.y][maze.intialSate.x] + "");
+		agentCell.add(1 + "");
+		agentCell.add(maze.xhatch + "");
+		agentCell.add("s0");
+		String agent = generate_predicates("at", agentCell) + "\n";
+		
+		for(int i = 0; i < maze.Length; i++) {
+			for(int j = 0; j < maze.Width; j++) {
+				ArrayList<String> cell = new ArrayList<String>();
+				cell.add(maze.cellNumber[i][j] + "");
+				cells = cells + generate_predicates("cell", cell);
+				cells = cells + "\n";
+				
+				if (maze.mazeGrid[j][i].isGoal) {
+					goal = generate_predicates("goal",cell) + "\n";
+				}
+				if(maze.mazeGrid[j][i].wallDown && maze.cellNumber[i][j] - maze.Width >= 0){
+					ArrayList<String> wallIndex = new ArrayList<String>();
+					wallIndex.add(maze.cellNumber[i][j] + "");
+					wallIndex.add(maze.cellNumber[i][j] - maze.Width + "");
+					walls =  generate_predicates("walldown", wallIndex) + "\n" + walls;
+				}
+				else if(maze.mazeGrid[j][i].wallLeft && maze.cellNumber[i][j] - 1 >= 0 && maze.cellNumber[i][j] % maze.Width > 0){
+					ArrayList<String> wallIndex = new ArrayList<String>();
+					wallIndex.add(maze.cellNumber[i][j] + "");
+					wallIndex.add(maze.cellNumber[i][j] - 1 + "");
+					walls = walls + generate_predicates("wallleft", wallIndex) + "\n";
+				}
+				if(maze.mazeGrid[j][i].ContainsPock) {
+					ArrayList<String> pokemon = new ArrayList<String>();
+					pokemon.add(maze.cellNumber[i][j] + "");
+					pokemon.add("s0");
+					pok = pok + generate_predicates("pokemon", pokemon) + "\n"; 
+				}
 			}
-			System.out.println(wallsUp);
-			System.out.println(current);
-			System.out.println(wallsDown);
 		}
+		String initialProblem = goal + agent + dimension + walls + cells + pok + xhatch; 
+
+		try{
+		    PrintWriter writer = new PrintWriter("mazeGenerated.pl", "UTF-8");
+		    writer.println(initialProblem);
+		    System.out.println("GOWA");
+		    writer.close();
+		} catch (Exception e) {
+		  System.out.println("Could not write to the text file");
+		}		
 	}
 	public static void main(String[] args){
 		Maze maze = new Maze();
@@ -390,18 +400,24 @@ public class Maze{
 			System.out.println(maze.pokemonLocations.get(i).toString() );
 			System.out.println(maze.mazeGrid[maze.pokemonLocations.get(i).x][maze.pokemonLocations.get(i).y].ContainsPock);
 		}
-		//PrintMaze(maze);
+		PrintMaze(maze);
+		/*
 		ArrayList<String> inputs = new ArrayList<String>();		
 		String dimension = generate_predicates("dimension",new ArrayList<String>() {{
 			add(6 + "");
 		    add(6+ "");}});
 		for(int i =0; i < maze.cellNumber.length; i++) {
-			for(int j =0; j < maze.cellNumber[1].length; j++){ 
+			for(int j =0; j < maze.cellNumber[i].length; j++){ 
+				System.out.print(j + "," + i + ",");
 				System.out.println(maze.cellNumber[i][j]);
 			}
 			System.out.println("\n");
 			}
+		*/
+		GenMazeTextFile(maze);
 	}
+
+		
 
 }
 /*
