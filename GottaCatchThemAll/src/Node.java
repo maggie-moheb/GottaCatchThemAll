@@ -1,16 +1,23 @@
-
+/**
+ * node implementation class
+ * @author maggiemoheb, myriameayman, youmnasalah
+ *
+ */
 public class Node implements Comparable{
-	State state;
+	StateAbs state;
 	Node parent;
 	Operator operator;
 	int depth;
 	int pathCost;
 	int heuristicCost; 
 	
-	// create the root of the tree
-	// heuristic is set to zero at root which is wrong 
-	public Node MakeNode(State state) {
-		Node node = new Node(state,null,Operator.nill,0,Integer.MAX_VALUE,0,false);
+	/**
+	 * create the root of the tree
+	 * @param state
+	 * @return
+	 */
+	public Node MakeNode(StateAbs state) {
+		Node node = new Node((State)state,null,Operator.nill,0,Integer.MAX_VALUE,0,false);
 		return node;
 	}
 	public Node() {	
@@ -23,20 +30,30 @@ public class Node implements Comparable{
 		this.depth = 0; 
 		this.pathCost = p;
 	}
-	
-	// node constructor: State, operator used to reach this node, depth of the node, path cost to reach the node 
+	/**
+	 *  node constructor: State, operator used to reach this node, 
+	 *  depth of the node, path cost to reach the node 
+	 * @param s
+	 * @param parent
+	 * @param operator
+	 * @param depth
+	 * @param pathCost
+	 * @param heuristicCost
+	 * @param goal
+	 */
 	public Node(State s, Node parent, Operator operator, int depth,int pathCost, int heuristicCost, boolean goal) {
 		this.state = new State(s.x, s.y, s.direction,s.pokemonsSoFar,s.xHatch,goal,s.pokLocation); 
-//		this.state = state;
-//		System.out.println("STATE: "+ this.state);
-
 		this.parent = parent; 
 		this.operator = operator; 
 		this.depth = depth; 
 		this.pathCost = pathCost; 
 		this.heuristicCost = heuristicCost; 
 	}
-	public State getState() {
+	/**
+	 * getters and setters
+	 * @return
+	 */
+	public StateAbs getState() {
 		return state;
 	}
 	public void setState(State state) {
@@ -66,12 +83,20 @@ public class Node implements Comparable{
 	public void setPathCost(int pathCost) {
 		this.pathCost = pathCost;
 	}
+	/**
+	 * compare on the pathcost
+	 */
 	public int compareTo(Object o) {
 		Node node = (Node) o;
 		if(pathCost > node.pathCost) return 1; 
 		if(pathCost < node.pathCost) return -1; 
 		return 0; 
 	}
+	/**
+	 * compare by heuristics and pathcost
+	 * @param o
+	 * @return
+	 */
 	public int compareToHeuristic(Object o) {
 		Node node = (Node) o;
 		int cost = pathCost + heuristicCost; 
@@ -80,6 +105,11 @@ public class Node implements Comparable{
 		if(cost < nodeCost) return -1; 
 		return 0; 
 	}
+	/**
+	 * compare by heuristic
+	 * @param o
+	 * @return
+	 */
 	public int compareToGreedyHeuristic(Object o) {
 		Node node = (Node) o;
 		int cost = heuristicCost; 
@@ -87,5 +117,8 @@ public class Node implements Comparable{
 		if(cost > nodeCost) return 1; 
 		if(cost < nodeCost) return -1; 
 		return 0; 
+	}
+	public String toString() {
+		return "X node = " + ((State)this.state).x + " ,Y node = " + ((State)this.state).y + " ,Direction = " + ((State)this.state).direction;
 	}
 }

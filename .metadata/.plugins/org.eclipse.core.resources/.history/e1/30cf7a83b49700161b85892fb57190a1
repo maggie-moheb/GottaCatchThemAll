@@ -1,0 +1,10 @@
+/**
+ * operators of the problem
+ * @author maggiemoheb
+ *
+ */
+public enum Operator {
+	nill, // in case of root
+	// OTHER POSSIBILITIES 
+	ROTATELEFT,ROTATERIGHT, TRANSLATE;
+}

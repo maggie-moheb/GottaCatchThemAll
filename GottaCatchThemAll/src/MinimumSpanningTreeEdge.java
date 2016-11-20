@@ -1,5 +1,10 @@
 import java.awt.Point;
 import java.util.ArrayList;
+/**
+ * vertex implementation of the minimum spanning tree
+ * @author maggiemoheb, myriameayman, youmnasalah
+ *
+ */
 class Vertex{
 	int x;
 	int y;
@@ -21,6 +26,11 @@ class Vertex{
 		return vertices;
 	}
 }
+/**
+ * edge of the minimum spanning tree
+ * @author maggiemoheb, myriameayman, youmnasalah
+ *
+ */
 public class MinimumSpanningTreeEdge implements Comparable{
 	int weight;
 	Vertex start;
@@ -31,11 +41,18 @@ public class MinimumSpanningTreeEdge implements Comparable{
 		this.end = end;
 		this.weight = manhattan(start, end);
 	}
-	
+	/**
+	 * manhattan distance to get the weight of the edge
+	 * @param start
+	 * @param end
+	 * @return
+	 */
 	public static int manhattan(Vertex start, Vertex end) {
 		return Math.abs(start.x - end.x) + Math.abs(start.y - end.y);
 	}
-	
+	/**
+	 * comparison between edges
+	 */
 	@Override
 	public int compareTo(Object o) {
 		MinimumSpanningTreeEdge edge = (MinimumSpanningTreeEdge)o;
@@ -47,10 +64,13 @@ public class MinimumSpanningTreeEdge implements Comparable{
 		}
 		return 0;
 	}
-	
+	/**
+	 * conversion of locations to edges of the tree
+	 * @param pokemonLocations
+	 * @return
+	 */
 	public static ArrayList<MinimumSpanningTreeEdge> convertToEdges(ArrayList<Vertex> pokemonLocations) {
 		ArrayList<MinimumSpanningTreeEdge> pokemonEdges = new ArrayList<MinimumSpanningTreeEdge>();
-		System.out.println(pokemonLocations.size());
 		for(int i = 0; i<pokemonLocations.size(); i++) {
 			for(int j = i+1; j<pokemonLocations.size(); j++) {
 				MinimumSpanningTreeEdge edge = new MinimumSpanningTreeEdge(pokemonLocations.get(i), pokemonLocations.get(j));

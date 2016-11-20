@@ -1,0 +1,17 @@
+
+public class NodeAbs {
+	StateAbs state;
+	NodeAbs parent;
+	Operator operator;
+	int depth;
+	int pathCost;
+	int heuristicCost; 
+	public NodeAbs MakeNode(StateAbs state) {
+		Node node = new Node(state,null,Operator.nill,0,Integer.MAX_VALUE,0,false);
+		return node;
+	}
+
+	// create the root of the tree
+	// heuristic is set to zero at root which is wrong 
+	
+}

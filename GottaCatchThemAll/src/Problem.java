@@ -1,12 +1,15 @@
-import java.awt.Point;
 import java.util.ArrayList;
-
+/**
+ * abstract problem class
+ * @author maggiemoheb, myriameayman, youmnasalah
+ *
+ */
 public abstract class Problem {
 	Operator[] operators;
-	State initialState;
-	State[] stateSpace;
-	
-	public abstract boolean passGoalTest(State currentState);
+	StateAbs initialState;
+	StateAbs[] stateSpace;
+
+	public abstract boolean passGoalTest(StateAbs currentState);
 	
 	public Operator[] getOperators() {
 		return operators;
@@ -16,33 +19,36 @@ public abstract class Problem {
 		this.operators = operators;
 	}
 
-	public State getInitialState() {
+	public StateAbs getInitialState() {
 		return initialState;
 	}
 
-	public void setInitialState(State initialState) {
+	public void setInitialState(StateAbs initialState) {
 		this.initialState = initialState;
 	}
 
-	public State[] getStateSpace() {
+	public StateAbs[] getStateSpace() {
 		return stateSpace;
 	}
 
-	public void setStateSpace(State[] stateSpace) {
+	public void setStateSpace(StateAbs[] stateSpace) {
 		this.stateSpace = stateSpace;
 	}
 
 	//path cost 
 	public abstract int pathCostFunction(Node node);
-	
+
 	// expand a specific node based on the operators of the problem
 	public abstract ArrayList<Node> expand(Node node);
-	
+
 	public void setFirstHeuristic(Node node) {
 		// TODO Auto-generated method stub
-		
-	}
-	public abstract void setSecondHeuristic(Node node);
-	public abstract void setThirdHeuristic(Node node);
 
+	}
+
+	public abstract void setSecondHeuristic(Node node);
+
+	public abstract void setThirdHeuristic(Node node);
 }
+
+

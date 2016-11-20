@@ -1,0 +1,19 @@
+goal( 0 ).
+at( 4 , 1 , 4 , s0 ).
+dimension( 3 , 3 ).
+wall_left( 2 , 1 ).
+wall_left( 4 , 3 ).
+wall_left( 5 , 4 ).
+wall_down( 7 , 4 ).
+cell( 0 ).
+cell( 1 ).
+cell( 2 ).
+cell( 3 ).
+cell( 4 ).
+cell( 5 ).
+cell( 6 ).
+cell( 7 ).
+cell( 8 ).
+pokemon( 0 , s0 ).
+pokemon( 3 , s0 ).
+
